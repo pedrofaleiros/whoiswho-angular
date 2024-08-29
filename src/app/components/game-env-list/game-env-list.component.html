@@ -1,13 +1,22 @@
 <ul class="flex flex-col m-4">
-  <p
-    *ngIf="gameEnvs.length != 0"
-    class="text-sm text-gray-500 font-medium px-4 uppercase mb-1"
-  >
-    Ambientes
-  </p>
+  <div class="w-full flex flex-row justify-between align-middle mb-1 px-4">
+    <p
+      *ngIf="gameEnvs.length != 0"
+      class="text-sm text-gray-500 font-medium uppercase"
+    >
+      Ambientes
+    </p>
+
+    <p
+      (click)="setShowAll()"
+      class="text-sm text-blue-600 font-medium cursor-pointer"
+    >
+      {{ showAll ? "Ocultar" : "Mostrar todos" }}
+    </p>
+  </div>
 
   <div
-    *ngFor="let gameEnv of gameEnvs; let last = last; let first = first"
+    *ngFor="let gameEnv of getList(); let last = last; let first = first"
     class="bg-gray-900 rounded-lg"
   >
     <div

@@ -1,2 +1,16 @@
-<app-app-bar></app-app-bar>
+<div class="flex flex-row justify-between p-4 items-center">
+  <div class="flex flex-row items-center">
+    <img src="/assets/whoiswho-logo.svg" alt="WhoIsWho Logo" class="size-8" />
+    <span class="text-red-600 font-mono text-2xl font-bold ml-2">WhoIsWho</span>
+  </div>
+</div>
 <app-game-env-list></app-game-env-list>
+<div class="m-4">
+  <button
+    (click)="logout()"
+    class="w-full p-3 bg-gray-900 rounded-lg text-red-600 active:bg-gray-800 cursor-pointer"
+  >
+    Sair da conta
+  </button>
+</div>
+<span class="text-gray-950">.</span>

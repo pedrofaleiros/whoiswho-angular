@@ -43,7 +43,11 @@ export class EditGameEnvComponent {
         this.findPlayerRoles(this.gameEnv.id)
       },
       error: (err: HttpErrorResponse) => {
-        this.toast.error(err.error.message)
+        if (err.status === 401) {
+          this.toast.error("Não autorizado")
+        } else {
+          this.toast.error(err.error.message)
+        }
         this.router.navigate(['home'])
       }
     })

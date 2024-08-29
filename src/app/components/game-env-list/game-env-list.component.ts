@@ -21,9 +21,25 @@ export class GameEnvListComponent {
   gameEnvService = inject(GameEnvService)
   gameEnvs: GameEnv[] = []
   newGameEnv = new GameEnv("", "")
+  showAll: boolean = false
 
   constructor() {
+    this.showAll = sessionStorage.getItem('show-all-game-env') === 'true' ? true : false
     this.findAll()
+  }
+
+  getList() {
+    if (this.showAll) {
+      return this.gameEnvs;
+    }
+
+    return this.gameEnvs.slice(0, 5);
+  }
+
+
+  setShowAll() {
+    this.showAll = !this.showAll
+    sessionStorage.setItem('show-all-game-env', this.showAll ? "true" : "false")
   }
 
   findAll() {

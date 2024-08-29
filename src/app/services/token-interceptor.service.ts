@@ -7,7 +7,7 @@ export const TokenInterceptor: HttpInterceptorFn = (req, next) => {
     let router = inject(Router)
 
     let token = localStorage.getItem('auth-token')
-    if (token && !router.url.includes("/auth")) {
+    if (token && (!router.url.includes("/login") || !router.url.includes("/signup"))) {
         req = req.clone({
             setHeaders: { Authorization: `Bearer ${token}` }
         })
