@@ -1,0 +1,50 @@
+<ul class="flex flex-col m-4">
+  <p
+    *ngIf="gameEnvs.length != 0"
+    class="text-sm text-gray-500 font-medium px-4 uppercase mb-1"
+  >
+    Ambientes
+  </p>
+
+  <div
+    *ngFor="let gameEnv of gameEnvs; let last = last; let first = first"
+    class="bg-gray-900 rounded-lg"
+  >
+    <div
+      (click)="edit(gameEnv)"
+      class="bg-gray-900 p-3 pl-4 hover:bg-gray-800 cursor-pointer flex flex-row"
+      [ngClass]="{
+        'rounded-b-lg': last,
+        'rounded-t-lg': first,
+      }"
+    >
+      <span class="w-full text-base">
+        {{ gameEnv.name }}
+      </span>
+
+      <mat-icon class="text-gray-400">chevron_right</mat-icon>
+    </div>
+    <div class="h-[1px] bg-gray-800" [ngClass]="{ hidden: last }"></div>
+  </div>
+</ul>
+
+<div class="m-4">
+  <p class="text-sm text-gray-500 font-medium px-4 uppercase mb-1">
+    Adicionar Ambiente
+  </p>
+  <div
+    class="w-full bg-gray-900 p-3 pl-4 rounded-lg text-base flex flex-row justify-between"
+  >
+    <input
+      [(ngModel)]="newGameEnv.name"
+      placeholder="Novo ambiente"
+      type="text"
+      class="text-left w-full appearance-none bg-transparent border-none text-white focus:outline-none text-base"
+    />
+    <mat-icon
+      (click)="create()"
+      class="text-green-600 hover:text-green-500 cursor-pointer"
+      >add_circle</mat-icon
+    >
+  </div>
+</div>

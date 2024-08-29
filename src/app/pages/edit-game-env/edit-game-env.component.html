@@ -1,0 +1,98 @@
+<div
+  class="w-full flex flex-row justify-between p-2 pr-4 pt-4 align-middle items-center"
+>
+  <div
+    class="align-middle items-center flex flex-row text-blue-600 hover:text-blue-900 cursor-pointer"
+    (click)="navBack()"
+  >
+    <mat-icon class="">chevron_left</mat-icon>
+    <p class="text-lg">Ambientes</p>
+  </div>
+</div>
+
+<div class="w-full items-center flex flex-col p-4 gap-4">
+  <div class="w-full">
+    <p class="text-sm text-gray-500 font-medium px-4 uppercase mb-1">
+      Editar nome
+    </p>
+
+    <div
+      class="w-full bg-gray-900 p-3 pl-4 rounded-lg text-base flex flex-row justify-between"
+    >
+      <input
+        [(ngModel)]="gameEnv.name"
+        type="text"
+        class="text-left w-full appearance-none bg-transparent border-none text-white focus:outline-none"
+      />
+      <button
+        (click)="save()"
+        class="text-green-600 font-medium hover:text-green-400 cursor-pointer"
+      >
+        Salvar
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="playerRolesList.length != 0" class="w-full">
+    <p class="text-sm text-gray-500 font-medium px-4 uppercase mb-1">
+      Papéis
+    </p>
+
+    <ul
+      *ngIf="gameEnv.id != ''"
+      class="w-full flex flex-col bg-gray-900 rounded-lg"
+    >
+      <div
+        *ngFor="let el of playerRolesList; let last = last; let first = first"
+      >
+        <div
+          class="bg-gray-900 p-3 pl-4 hover:bg-gray-800 cursor-pointer text-base flex flex-row"
+          [ngClass]="{
+          'rounded-b-lg': last,
+          'rounded-t-lg': first,
+        }"
+        >
+          <span class="w-full">
+            {{ el.name }}
+          </span>
+          <mat-icon
+            (click)="deletePlayerRole(el.id)"
+            class="text-gray-600 hover:text-red-300 cursor-pointer"
+            >remove_circle</mat-icon
+          >
+        </div>
+        <div class="h-[1px] bg-gray-800" [ngClass]="{ hidden: last }"></div>
+      </div>
+    </ul>
+  </div>
+
+  <div *ngIf="gameEnv.id != ''" class="w-full">
+    <p class="text-sm text-gray-500 font-medium px-4 uppercase mb-1">
+      Adicionar papel
+    </p>
+    <div
+      class="w-full bg-gray-900 p-3 pl-4 rounded-lg text-base flex flex-row justify-between"
+    >
+      <input
+        [(ngModel)]="newPlayerRole.name"
+        placeholder="Novo papel"
+        type="text"
+        class="text-left w-full appearance-none bg-transparent border-none text-white focus:outline-none"
+      />
+      <mat-icon
+        (click)="create()"
+        class="text-green-600 hover:text-green-500 cursor-pointer"
+        >add_circle</mat-icon
+      >
+    </div>
+  </div>
+
+  <div
+    (click)="deleteGameEnv()"
+    *ngIf="gameEnv.id != ''"
+    class="w-full cursor-pointer bg-gray-900 p-3 rounded-lg hover:bg-gray-800 text-base flex flex-row justify-between"
+  >
+    <p class="text-base text-red-600 cursor-pointer">Deletar ambiente</p>
+    <mat-icon class="text-red-600">delete</mat-icon>
+  </div>
+</div>
