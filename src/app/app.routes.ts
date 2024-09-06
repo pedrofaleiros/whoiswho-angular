@@ -8,6 +8,7 @@ import { MainComponent } from './pages/main/main.component';
 import { GameEnvsComponent } from './pages/game-envs/game-envs.component';
 
 export const routes: Routes = [
+    { path: "", redirectTo: "home", pathMatch: "full" },
     { path: "login", component: LoginComponent },
     { path: "signup", component: SignupComponent },
     {

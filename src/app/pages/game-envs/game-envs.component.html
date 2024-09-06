@@ -16,24 +16,28 @@
       aria-disabled="false"
       (click)="setActive(i)"
       [ngClass]="{
-        'rounded-md bg-slate-700 text-slate-100': activeIndex === i,
-        'bg-transparent text-slate-500': activeIndex !== i
+        'rounded-md bg-slate-700 text-slate-100 ': activeIndex === i,
+        'bg-transparent text-slate-500 ': activeIndex !== i
       }"
-      class="hover:text-slate-100 text-sm font-medium inline-flex items-center w-full justify-center py-2 align-middle transition-all duration-300 ease-in-out disabled:cursor-not-allowed h-7 px-3"
+      class="hover:text-slate-100 font-medium text-sm inline-flex items-center w-full justify-center py-2 align-middle transition-all duration-300 ease-in-out h-7 px-3"
     >
       <span>{{ item.label }}</span>
     </button>
   </div>
 </div>
 
-<div *ngIf="activeIndex === 0">
+<div *ngIf="activeIndex === 0" class="m-4">
   <div *ngFor="let item of userGameEnvs">
-    <span>{{ item.name }} </span>
+    <app-default-game-env [gameEnv]="item"></app-default-game-env>
   </div>
 </div>
 
-<div *ngIf="activeIndex === 1">
+<div *ngIf="activeIndex === 1" class="m-4">
   <div *ngFor="let item of defaultGameEnvs">
-    <span>{{ item.name }} </span>
+    <app-default-game-env [gameEnv]="item"></app-default-game-env>
   </div>
 </div>
+
+<div
+class="w-full h-64"
+></div>

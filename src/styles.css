@@ -22,3 +22,13 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+/* Para navegadores como Chrome, Edge e Safari */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Para Firefox */
+body {
+  scrollbar-width: none;
+}

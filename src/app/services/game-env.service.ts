@@ -15,7 +15,7 @@ export class GameEnvService {
   findAll() {
     return this.httpClient.get<GameEnv[]>(this.API_URL)
   }
-  
+
   findAllDefault() {
     return this.httpClient.get<GameEnv[]>(`${this.API_URL}/default`)
   }

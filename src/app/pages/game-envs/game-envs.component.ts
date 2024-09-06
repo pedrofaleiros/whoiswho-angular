@@ -3,11 +3,12 @@ import { Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { GameEnv } from '../../models/game-env';
 import { GameEnvService } from '../../services/game-env.service';
+import { DefaultGameEnvComponent } from "../../components/default-game-env/default-game-env.component";
 
 @Component({
   selector: 'app-game-envs',
   standalone: true,
-  imports: [MatIconModule, CommonModule],
+  imports: [MatIconModule, CommonModule, DefaultGameEnvComponent],
   templateUrl: './game-envs.component.html',
 })
 export class GameEnvsComponent {
