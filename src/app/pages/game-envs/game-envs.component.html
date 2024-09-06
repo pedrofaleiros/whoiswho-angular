@@ -1,0 +1,39 @@
+<div
+  (click)="navigateBack()"
+  class="flex flex-row items-center mt-2 text-blue-600 active:text-blue-400"
+>
+  <mat-icon class="">chevron_left</mat-icon>
+  <button class="text-lg">Voltar</button>
+</div>
+
+<div class="flex justify-center px-4 py-4">
+  <div
+    class="bg-slate-900 gap-1 inline-flex h-9 max-w-sm w-full justify-between items-baseline rounded-lg p-1"
+  >
+    <button
+      *ngFor="let item of items; let i = index"
+      type="button"
+      aria-disabled="false"
+      (click)="setActive(i)"
+      [ngClass]="{
+        'rounded-md bg-slate-700 text-slate-100': activeIndex === i,
+        'bg-transparent text-slate-500': activeIndex !== i
+      }"
+      class="hover:text-slate-100 text-sm font-medium inline-flex items-center w-full justify-center py-2 align-middle transition-all duration-300 ease-in-out disabled:cursor-not-allowed h-7 px-3"
+    >
+      <span>{{ item.label }}</span>
+    </button>
+  </div>
+</div>
+
+<div *ngIf="activeIndex === 0">
+  <div *ngFor="let item of userGameEnvs">
+    <span>{{ item.name }} </span>
+  </div>
+</div>
+
+<div *ngIf="activeIndex === 1">
+  <div *ngFor="let item of defaultGameEnvs">
+    <span>{{ item.name }} </span>
+  </div>
+</div>

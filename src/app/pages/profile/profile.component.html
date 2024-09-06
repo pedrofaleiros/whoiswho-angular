@@ -1,16 +1,43 @@
-<div class="flex flex-row justify-between p-4 items-center">
-  <div class="flex flex-row items-center">
-    <img src="/assets/whoiswho-logo.svg" alt="WhoIsWho Logo" class="size-8" />
-    <span class="text-red-600 font-mono text-2xl font-bold ml-2">WhoIsWho</span>
+<app-app-bar [showUsername]="false"></app-app-bar>
+
+<div class="m-4 flex flex-col gap-6 mt-8">
+  <div class="w-full">
+    <div
+      class="w-full items-center bg-gray-900 rounded-lg flex flex-row justify-between gap-3 p-3"
+    >
+      <span class="text-base text-gray-400">Username</span>
+      <input
+        [(ngModel)]="usernameInput"
+        type="text"
+        class="text-base text-left w-full appearance-none bg-transparent border-none text-white focus:outline-none"
+      />
+      <button
+        (click)="save()"
+        class="text-green-600 font-medium active:text-green-400 cursor-pointer"
+      >
+        Salvar
+      </button>
+    </div>
+    <p
+      *ngIf="errorMessage !== null"
+      class="text-right text-sm text-red-600 py-2"
+    >
+      {{ errorMessage }}
+    </p>
   </div>
-</div>
-<app-game-env-list></app-game-env-list>
-<div class="m-4">
+
+  <button
+    (click)="navigateGameEnvs()"
+    class="w-full bg-gray-900 rounded-lg p-3 flex flex-row justify-between text-white active:bg-gray-800 cursor-pointer"
+  >
+    <p class="w-full text-left">Ambientes</p>
+    <mat-icon class="text-gray-400">chevron_right</mat-icon>
+  </button>
+
   <button
     (click)="logout()"
-    class="w-full p-3 bg-gray-900 rounded-lg text-red-600 active:bg-gray-800 cursor-pointer"
+    class="w-full text-start p-3 bg-gray-900 rounded-lg text-red-600 active:bg-gray-800 cursor-pointer"
   >
     Sair da conta
   </button>
 </div>
-<span class="text-gray-950">.</span>

@@ -1,15 +1,11 @@
-<ul class="flex flex-col m-4">
+<ul class="flex flex-col m-4" *ngIf="gameEnvs.length != 0">
   <div class="w-full flex flex-row justify-between align-middle mb-1 px-4">
-    <p
-      *ngIf="gameEnvs.length != 0"
-      class="text-sm text-gray-500 font-medium uppercase"
-    >
-      Ambientes
-    </p>
+    <p class="text-sm text-gray-500 font-medium uppercase">Meus Ambientes</p>
 
     <p
       (click)="setShowAll()"
       class="text-sm text-blue-600 font-medium cursor-pointer"
+      *ngIf="gameEnvs.length > 5"
     >
       {{ showAll ? "Ocultar" : "Mostrar todos" }}
     </p>
