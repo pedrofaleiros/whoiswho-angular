@@ -81,6 +81,7 @@ export class GameEnvsComponent {
     this.gameEnvService.findAll().subscribe({
       next: (data) => {
         this.userGameEnvs = data
+        this.userGameEnvs.sort((a, b) => a.name.localeCompare(b.name));
       },
       error: (err) => {
 
@@ -92,6 +93,7 @@ export class GameEnvsComponent {
     this.gameEnvService.findAllDefault().subscribe({
       next: (data) => {
         this.defaultGameEnvs = data
+        this.defaultGameEnvs.sort((a, b) => a.name.localeCompare(b.name));
       },
       error: (err) => {
 

@@ -34,7 +34,13 @@
   >
   </app-game-env-input>
 
-  <div *ngFor="let item of userGameEnvs">
+  <div *ngFor="let item of userGameEnvs; let i = index">
+    <div
+      *ngIf="i === 0 || userGameEnvs[i - 1].name[0] !== item.name[0]"
+      class="text-sm text-gray-500 font-medium mt-8 uppercase"
+    >
+      {{ item.name[0] }}
+    </div>
     <app-user-game-env
       (deleteGameEnv)="deleteGameEnv(item.id)"
       [gameEnv]="item"
@@ -43,7 +49,13 @@
 </div>
 
 <div *ngIf="activeIndex === 1" class="m-4">
-  <div *ngFor="let item of defaultGameEnvs">
+  <div *ngFor="let item of defaultGameEnvs; let i = index">
+    <div
+      *ngIf="i === 0 || defaultGameEnvs[i - 1].name[0] !== item.name[0]"
+      class="text-sm text-gray-500 font-medium mt-8 uppercase"
+    >
+      {{ item.name[0] }}
+    </div>
     <app-default-game-env [gameEnv]="item"></app-default-game-env>
   </div>
 </div>
