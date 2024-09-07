@@ -2,9 +2,11 @@ import { HttpErrorResponse, HttpInterceptorFn } from "@angular/common/http";
 import { inject } from "@angular/core";
 import { Router } from "@angular/router";
 import { catchError, throwError } from "rxjs";
+import { AuthService } from "./auth.service";
 
 export const TokenInterceptor: HttpInterceptorFn = (req, next) => {
     let router = inject(Router)
+    let authService = inject(AuthService)
 
     let token = localStorage.getItem('auth-token')
     if (token && (!router.url.includes("/login") || !router.url.includes("/signup"))) {
@@ -14,21 +16,14 @@ export const TokenInterceptor: HttpInterceptorFn = (req, next) => {
     }
 
     return next(req).pipe(
-        // catchError((err: any) => {
-        //     if (err instanceof HttpErrorResponse) {
-        //         if (err.status === 401) {
-        //             alert('401 - tratar aqui');
-        //             router.navigate(['/login']);
-        //         } else if (err.status === 403) {
-        //             alert('403 - tratar aqui');
-        //             router.navigate(['/login']);
-        //         } else {
-        //             console.error('HTTP error:', err);
-        //         }
-        //     } else {
-        //         console.error('An error occurred:', err);
-        //     }
-        //     return throwError(() => err);
-        // })
+        catchError((err: any) => {
+            if (err instanceof HttpErrorResponse) {
+                let status = err.status
+                if (status === 401 || status === 403) {
+                    authService.logout(router)
+                }
+            }
+            return throwError(() => err);
+        })
     );
 }

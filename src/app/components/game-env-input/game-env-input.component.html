@@ -1,0 +1,22 @@
+<div id="add_game_env" class="w-full mb-8">
+  <p class="uppercase text-gray-500 font-medium text-sm p-1">Novo ambiente</p>
+  <div
+    class="w-full items-center bg-gray-900 rounded-lg flex flex-row justify-between gap-3 p-3"
+  >
+    <input
+      [(ngModel)]="newGameEnv.name"
+      placeholder="Nome"
+      type="text"
+      class="text-base text-left w-full appearance-none bg-transparent border-none text-white focus:outline-none"
+    />
+    <button
+      (click)="onClick()"
+      class="text-green-600 font-medium active:text-green-400 cursor-pointer"
+    >
+      Adicionar
+    </button>
+  </div>
+  <p *ngIf="errorMessage !== null" class="text-right text-sm text-red-600 py-2">
+    {{ errorMessage }}
+  </p>
+</div>

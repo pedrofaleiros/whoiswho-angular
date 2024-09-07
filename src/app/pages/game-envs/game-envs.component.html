@@ -27,8 +27,18 @@
 </div>
 
 <div *ngIf="activeIndex === 0" class="m-4">
+  <app-game-env-input
+    [errorMessage]="errorMessage"
+    [newGameEnv]="newGameEnv"
+    (createGameEnv)="createGameEnv()"
+  >
+  </app-game-env-input>
+
   <div *ngFor="let item of userGameEnvs">
-    <app-default-game-env [gameEnv]="item"></app-default-game-env>
+    <app-user-game-env
+      (deleteGameEnv)="deleteGameEnv(item.id)"
+      [gameEnv]="item"
+    ></app-user-game-env>
   </div>
 </div>
 
@@ -38,6 +48,4 @@
   </div>
 </div>
 
-<div
-class="w-full h-64"
-></div>
+<div class="w-full h-32"></div>

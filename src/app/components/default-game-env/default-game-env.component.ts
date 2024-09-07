@@ -4,11 +4,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { GameEnv } from '../../models/game-env';
 import { PlayerRole } from '../../models/player-role';
 import { PlayerRoleService } from '../../services/player-role.service';
+import { PlayerRoleListComponent } from "../player-role-list/player-role-list.component";
 
 @Component({
   selector: 'app-default-game-env',
   standalone: true,
-  imports: [MatIconModule, CommonModule],
+  imports: [MatIconModule, CommonModule, PlayerRoleListComponent],
   templateUrl: './default-game-env.component.html',
 })
 export class DefaultGameEnvComponent {
@@ -16,7 +17,7 @@ export class DefaultGameEnvComponent {
   playerRoleService = inject(PlayerRoleService)
   @Input() gameEnv!: GameEnv
   expand = false;
-  loading = false
+  loading = true
 
   playerRoles: PlayerRole[] = []
 
@@ -29,7 +30,6 @@ export class DefaultGameEnvComponent {
   }
 
   findPlayerRoles() {
-    this.loading = true
     this.playerRoleService.findAll(this.gameEnv.id).subscribe({
       next: (data) => {
         this.playerRoles = data

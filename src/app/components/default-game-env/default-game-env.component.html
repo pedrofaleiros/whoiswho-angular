@@ -17,20 +17,20 @@
 
 <div>
   <div
-    *ngIf="playerRoles.length === 0 && expand && !loading"
+    *ngIf="expand && !loading && playerRoles.length === 0"
     class="bg-gray-900 rounded-lg text-base w-full p-3"
   >
     <span class="">Nenhum papel</span>
   </div>
 </div>
 
-<div *ngIf="expand && loading" class="w-full py-8 flex justify-center">
+<!-- <div *ngIf="expand && loading" class="w-full py-8 flex justify-center">
   <img
     src="/assets/loading.svg"
     alt="loading icon"
     class="size-6 animate-spin"
   />
-</div>
+</div> -->
 
 <div
   class="overflow-hidden transition-all duration-600 ease-in-out"
@@ -39,21 +39,5 @@
     'max-h-screen': expand,
   }"
 >
-  <ul
-    *ngFor="let item of playerRoles; let last = last; let first = first"
-    class="bg-gray-900 rounded-lg"
-  >
-    <li
-      class="bg-gray-900 p-3 pl-3 flex flex-row"
-      [ngClass]="{
-         'rounded-b-lg': last,
-         'rounded-t-lg': first,
-      }"
-    >
-      <span class="w-full text-base">
-        {{ item.name }}
-      </span>
-    </li>
-    <div class="h-[0.5px] bg-gray-800" [ngClass]="{ hidden: last }"></div>
-  </ul>
+  <app-player-role-list [playerRoles]="playerRoles"></app-player-role-list>
 </div>
