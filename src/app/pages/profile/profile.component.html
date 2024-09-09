@@ -1,6 +1,8 @@
-<app-app-bar [showUsername]="false"></app-app-bar>
+<!-- <app-app-bar [showUsername]="false"></app-app-bar> -->
 
-<div class="m-4 flex flex-col gap-6 mt-8">
+<app-back-button></app-back-button>
+
+<div class="m-4 flex flex-col gap-4 mt-8">
   <div class="w-full">
     <div
       class="w-full items-center bg-gray-900 rounded-lg flex flex-row justify-between gap-3 p-3"
@@ -26,13 +28,7 @@
     </p>
   </div>
 
-  <button
-    (click)="navigateGameEnvs()"
-    class="w-full bg-gray-900 rounded-lg p-3 flex flex-row justify-between text-white active:bg-gray-800 cursor-pointer"
-  >
-    <p class="w-full text-left">Ambientes</p>
-    <mat-icon class="text-gray-400">chevron_right</mat-icon>
-  </button>
+  <app-nav-game-env-button></app-nav-game-env-button>
 
   <button
     (click)="logout()"

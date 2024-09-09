@@ -3,12 +3,14 @@ import { inject, Injectable } from '@angular/core';
 import { AuthResponse } from '../types/auth-response.type';
 import { tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { LocalGameService } from './local-game.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
+  localGameService = inject(LocalGameService)
   API_URL = "http://192.168.0.129:8080/auth"
   httpClient = inject(HttpClient)
 
@@ -51,6 +53,7 @@ export class AuthService {
   }
 
   logout(router: Router) {
+    this.localGameService.clear()
     localStorage.removeItem('auth-token')
     localStorage.removeItem('auth-username')
     router.navigate(['login'])

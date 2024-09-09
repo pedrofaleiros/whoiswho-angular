@@ -24,20 +24,26 @@
   </div>
 </div>
 
-<!-- <div *ngIf="expand && loading" class="w-full py-8 flex justify-center">
+<div *ngIf="expand && loading" class="w-full py-8 flex justify-center">
   <img
     src="/assets/loading.svg"
     alt="loading icon"
     class="size-6 animate-spin"
   />
-</div> -->
+</div>
 
 <div
-  class="overflow-hidden transition-all duration-600 ease-in-out"
+  class="overflow-hidden transition-all duration-500 ease-in-out"
   [ngClass]="{
     'max-h-0': !expand,
     'max-h-screen': expand,
   }"
 >
+  <p
+    *ngIf="playerRoles.length !== 0"
+    class="uppercase text-gray-500 font-medium text-sm p-1"
+  >
+    Papeis
+  </p>
   <app-player-role-list [playerRoles]="playerRoles"></app-player-role-list>
 </div>

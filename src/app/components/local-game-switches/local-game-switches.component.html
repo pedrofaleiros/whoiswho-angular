@@ -1,0 +1,35 @@
+<div>
+  <div class="bg-gray-900 rounded-t-lg p-3 flex flex-row justify-between">
+    <span>Ambientes padrão</span>
+
+    <label class="inline-flex items-center cursor-pointer">
+      <input
+        type="checkbox"
+        [(ngModel)]="useDefaultGameEnvs"
+        (ngModelChange)="onUseDefaultChange($event)"
+        class="sr-only peer"
+      />
+      <div
+        class="relative w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
+      ></div>
+    </label>
+  </div>
+
+  <div class="h-[0.5px] bg-gray-800"></div>
+
+  <div class="bg-gray-900 rounded-b-lg p-3 flex flex-row justify-between">
+    <span>Meus ambientes</span>
+
+    <label class="inline-flex items-center cursor-pointer">
+      <input
+        type="checkbox"
+        [(ngModel)]="useUserGameEnvs"
+        (ngModelChange)="onUseUserChange($event)"
+        class="sr-only peer"
+      />
+      <div
+        class="relative w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
+      ></div>
+    </label>
+  </div>
+</div>

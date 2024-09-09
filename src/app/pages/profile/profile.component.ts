@@ -8,11 +8,13 @@ import { AuthService } from '../../services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
+import { BackButtonComponent } from "../../components/back-button/back-button.component";
+import { NavGameEnvButtonComponent } from "../../components/nav-game-env-button/nav-game-env-button.component";
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [GameEnvListComponent, AppBarComponent, MatIconModule, FormsModule, CommonModule],
+  imports: [GameEnvListComponent, AppBarComponent, MatIconModule, FormsModule, CommonModule, BackButtonComponent, NavGameEnvButtonComponent],
   templateUrl: './profile.component.html'
 })
 export class ProfileComponent {
@@ -54,9 +56,5 @@ export class ProfileComponent {
         this.errorMessage = err.error.message
       }
     })
-  }
-
-  navigateGameEnvs() {
-    this.router.navigate(['gameEnvs'])
   }
 }

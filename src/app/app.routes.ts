@@ -6,6 +6,8 @@ import { SignupComponent } from './pages/signup/signup.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { MainComponent } from './pages/main/main.component';
 import { GameEnvsComponent } from './pages/game-envs/game-envs.component';
+import { LocalGameComponent } from './pages/local-game/local-game.component';
+import { PlayLocalGameComponent } from './pages/play-local-game/play-local-game.component';
 
 export const routes: Routes = [
     { path: "", redirectTo: "home", pathMatch: "full" },
@@ -19,6 +21,8 @@ export const routes: Routes = [
             { path: "home", component: HomeComponent },
             { path: "profile", component: ProfileComponent },
             { path: "gameEnvs", component: GameEnvsComponent },
+            { path: "game", component: LocalGameComponent },
+            { path: "play", component: PlayLocalGameComponent },
         ]
     },
     { path: "**", redirectTo: "home" }

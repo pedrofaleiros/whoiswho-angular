@@ -9,17 +9,17 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { GameEnvInputComponent } from "../../components/game-env-input/game-env-input.component";
 import { UserGameEnvComponent } from "../../components/user-game-env/user-game-env.component";
 import { ToastrService } from 'ngx-toastr';
+import { BackButtonComponent } from "../../components/back-button/back-button.component";
 
 @Component({
   selector: 'app-game-envs',
   standalone: true,
-  imports: [MatIconModule, CommonModule, DefaultGameEnvComponent, FormsModule, GameEnvInputComponent, UserGameEnvComponent],
+  imports: [MatIconModule, CommonModule, DefaultGameEnvComponent, FormsModule, GameEnvInputComponent, UserGameEnvComponent, BackButtonComponent],
   templateUrl: './game-envs.component.html',
 })
 export class GameEnvsComponent {
 
   toast = inject(ToastrService)
-  location = inject(Location)
   gameEnvService = inject(GameEnvService)
 
   userGameEnvs: GameEnv[] = []
@@ -105,8 +105,4 @@ export class GameEnvsComponent {
     this.activeIndex = index
   }
 
-  navigateBack() {
-    this.toast.clear()
-    this.location.back()
-  }
 }
