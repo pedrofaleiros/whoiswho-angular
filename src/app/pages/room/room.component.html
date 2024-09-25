@@ -1,98 +1,104 @@
-<app-back-button></app-back-button>
+<app-back-button text="Sair da sala"></app-back-button>
 
-<div class="m-4">
-  <p
-    *ngIf="getUsers().length > 0"
-    class="uppercase text-gray-500 font-medium text-sm p-1"
-  >
-    Jogadores
-  </p>
-  <ul
-    *ngFor="let user of getUsers(); let last = last; let first = first"
-    class="bg-gray-900 rounded-lg"
-  >
-    <li
-      class="bg-gray-900 p-3 pl-3 flex flex-row text-gray-300"
-      [ngClass]="{
+<div *ngIf="roomData != null" class="m-4 flex-col flex gap-4">
+  <div>
+    <p
+      *ngIf="getUsers().length > 0"
+      class="uppercase text-gray-500 font-medium text-sm p-1"
+    >
+      Jogadores
+    </p>
+    <ul
+      *ngFor="let user of getUsers(); let last = last; let first = first"
+      class="bg-gray-900 rounded-lg"
+    >
+      <li
+        class="bg-gray-900 p-3 pl-3 flex flex-row text-gray-300"
+        [ngClass]="{
       'rounded-b-lg': last,
       'rounded-t-lg': first,
   }"
-    >
-      <span class="w-full text-base">
-        {{ user.username }}
-        {{ isMe(user.username) ? " (Você)" : "" }}
-      </span>
+      >
+        <span class="w-full text-base">
+          {{ user.username }}
+          {{ isMe(user.username) ? " (Você)" : "" }}
+        </span>
 
-      <span *ngIf="user.id === roomData?.owner?.id">(ADM)</span>
-    </li>
-    <div class="h-[0.5px] bg-gray-800" [ngClass]="{ hidden: last }"></div>
-  </ul>
-</div>
+        <span *ngIf="user.id === roomData?.owner?.id">(ADM)</span>
+      </li>
+      <div class="h-[1px] bg-gray-800" [ngClass]="{ hidden: last }"></div>
+    </ul>
+  </div>
 
-<!-- Switches -->
-<div class="m-4">
-  <div class="bg-gray-900 rounded-t-lg p-3 flex flex-row justify-between">
-    <span>Ambientes padrão</span>
+  <!-- Switches -->
+  <div>
+    <div class="bg-gray-900 rounded-t-lg p-3 flex flex-row justify-between">
+      <span>Ambientes padrão</span>
 
-    <div class="inline-flex items-center cursor-pointer">
+      <div class="inline-flex items-center cursor-pointer">
+        <div
+          (click)="updateIncludeDefault()"
+          class="relative w-11 h-6 bg-gray-500 rounded-full"
+          [ngClass]="{
+            'bg-blue-600': roomData.includeDefaultGameEnvs,
+            'bg-gray-500': !roomData.includeDefaultGameEnvs
+          }"
+        >
+          <div
+            class="absolute top-[2px] start-[2px] bg-white border-gray-300 border rounded-full h-5 w-5 transition-all"
+            [ngClass]="{
+              'translate-x-full': roomData.includeDefaultGameEnvs,
+              'translate-x-0': !roomData.includeDefaultGameEnvs
+            }"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="h-[1px] bg-gray-800"></div>
+
+    <div class="bg-gray-900 rounded-b-lg p-3 flex flex-row justify-between">
+      <span>Meus ambientes</span>
+
       <div
-        (click)="updateIncludeDefault()"
-        class="relative w-11 h-6 bg-gray-500 rounded-full"
-        [ngClass]="{
-          'bg-blue-600': roomData?.includeDefaultGameEnvs,
-          'bg-gray-500': !roomData?.includeDefaultGameEnvs
-        }"
+        (click)="updateIncludeUser()"
+        class="inline-flex items-center cursor-pointer"
       >
         <div
-          class="absolute top-[2px] start-[2px] bg-white border-gray-300 border rounded-full h-5 w-5 transition-all"
+          class="relative w-11 h-6 bg-gray-500 rounded-full"
           [ngClass]="{
-            'translate-x-full': roomData?.includeDefaultGameEnvs,
-            'translate-x-0': !roomData?.includeDefaultGameEnvs
+            'bg-blue-600': roomData.includeUserGameEnvs,
+            'bg-gray-500': !roomData.includeUserGameEnvs
           }"
-        ></div>
+        >
+          <div
+            class="absolute top-[2px] start-[2px] bg-white border-gray-300 border rounded-full h-5 w-5 transition-all"
+            [ngClass]="{
+              'translate-x-full': roomData.includeUserGameEnvs,
+              'translate-x-0': !roomData.includeUserGameEnvs
+            }"
+          ></div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="h-[0.5px] bg-gray-800"></div>
-
-  <div class="bg-gray-900 rounded-b-lg p-3 flex flex-row justify-between">
-    <span>Meus ambientes</span>
-
-    <div
-      (click)="updateIncludeUser()"
-      class="inline-flex items-center cursor-pointer"
-    >
-      <div
-        class="relative w-11 h-6 bg-gray-500 rounded-full"
-        [ngClass]="{
-          'bg-blue-600': roomData?.includeUserGameEnvs,
-          'bg-gray-500': !roomData?.includeUserGameEnvs
-        }"
+  <!-- Impostors -->
+  <div
+    (click)="updateImpostors()"
+    class="bg-gray-900 p-3 rounded-lg flex flex-row justify-between cursor-pointer"
+  >
+    <span>Impostores</span>
+    <div class="flex flex-row gap-1">
+      <ng-container
+        *ngFor="let impostor of [].constructor(roomData?.impostors || 0)"
       >
-        <div
-          class="absolute top-[2px] start-[2px] bg-white border-gray-300 border rounded-full h-5 w-5 transition-all"
-          [ngClass]="{
-            'translate-x-full': roomData?.includeUserGameEnvs,
-            'translate-x-0': !roomData?.includeUserGameEnvs
-          }"
-        ></div>
-      </div>
+        <img
+          src="/assets/whoiswho-logo.svg"
+          alt="WhoIsWho Logo"
+          class="size-6"
+        />
+      </ng-container>
     </div>
-  </div>
-</div>
-
-<!-- Impostors -->
-<div
-  (click)="updateImpostors()"
-  class="m-4 bg-gray-900 p-3 rounded-lg flex flex-row justify-between cursor-pointer"
->
-  <span>Impostores</span>
-  <div class="flex flex-row gap-1">
-    <ng-container
-      *ngFor="let impostor of [].constructor(roomData?.impostors || 0)"
-    >
-      <img src="/assets/whoiswho-logo.svg" alt="WhoIsWho Logo" class="size-6" />
-    </ng-container>
   </div>
 </div>

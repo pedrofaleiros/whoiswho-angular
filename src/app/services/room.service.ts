@@ -17,10 +17,7 @@ export class RoomService {
   private roomDataSubject: BehaviorSubject<Room | null> = new BehaviorSubject<Room | null>(null)
   public roomData$ = this.roomDataSubject.asObservable()
 
-  private room: string = ''
-
   connect(room: string) {
-    this.room = room
     let username = localStorage.getItem('auth-username') ?? "";
 
     this.stompClient = new Client({
@@ -48,6 +45,15 @@ export class RoomService {
         let data: string = message.body
         if (data) {
           alert(data)
+        }
+      })
+
+      this.stompClient?.subscribe("/user/queue/joinResponse", (message: IMessage) => {
+        let data: string = message.body
+        if (data) {
+          console.log('Join Response: ' + data)
+        } else {
+          this.router.navigate(['home'])
         }
       })
 
@@ -95,19 +101,18 @@ export class RoomService {
   }
 
   updateRoomData(data: UpdateRoomDTO) {
-    if (this.stompClient && this.room) {
+    if (this.stompClient && this.roomDataSubject.value?.id) {
       this.stompClient.publish({
-        destination: `/app/update/${this.room}`,
+        destination: `/app/update/${this.roomDataSubject.value.id}`,
         body: JSON.stringify(data)
       })
     }
   }
 
   leaveRoom() {
-    if (this.stompClient && this.room) {
+    if (this.stompClient && this.roomDataSubject.value?.id) {
       this.stompClient.deactivate()
-      console.log('disconnected')
-      this.room = ""
+      this.roomDataSubject.next(null)
     }
   }
 
