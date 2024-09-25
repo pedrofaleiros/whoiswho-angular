@@ -8,11 +8,13 @@ import { MainComponent } from './pages/main/main.component';
 import { GameEnvsComponent } from './pages/game-envs/game-envs.component';
 import { LocalGameComponent } from './pages/local-game/local-game.component';
 import { PlayLocalGameComponent } from './pages/play-local-game/play-local-game.component';
+import { RoomComponent } from './pages/room/room.component';
 
 export const routes: Routes = [
     { path: "", redirectTo: "home", pathMatch: "full" },
     { path: "login", component: LoginComponent },
     { path: "signup", component: SignupComponent },
+    { path: "room/:id", component: RoomComponent },
     {
         path: "",
         component: MainComponent,

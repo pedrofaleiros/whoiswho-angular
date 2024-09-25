@@ -1,1 +1,11 @@
-<p>play-local-game works!</p>
+
+<app-back-button></app-back-button>
+<div class="m-4 flex flex-col gap-2">
+  <div
+    *ngFor="let item of game.playerRoles"
+    class="bg-gray-900 rounded-lg p-3 flex flex-row justify-between"
+  >
+    <span>{{ item.name }}</span>
+    <span>{{ item.profession ?? "Impostor" }}</span>
+  </div>
+</div>

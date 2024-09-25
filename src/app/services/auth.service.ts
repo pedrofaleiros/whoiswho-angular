@@ -11,7 +11,7 @@ import { LocalGameService } from './local-game.service';
 export class AuthService {
 
   localGameService = inject(LocalGameService)
-  API_URL = "http://192.168.0.129:8080/auth"
+  API_URL = "http://192.168.0.130:8080/auth"
   httpClient = inject(HttpClient)
 
   constructor() { }
@@ -24,6 +24,7 @@ export class AuthService {
       tap((value) => {
         localStorage.setItem("auth-token", value.token)
         localStorage.setItem("auth-username", value.username)
+        localStorage.setItem("auth-id", value.id)
       })
     )
   }
@@ -36,6 +37,7 @@ export class AuthService {
       tap((value) => {
         localStorage.setItem("auth-token", value.token)
         localStorage.setItem("auth-username", value.username)
+        localStorage.setItem("auth-id", value.id)
       })
     )
   }
@@ -48,6 +50,7 @@ export class AuthService {
       tap((value) => {
         localStorage.setItem("auth-token", value.token)
         localStorage.setItem("auth-username", value.username)
+        localStorage.setItem("auth-id", value.id)
       })
     )
   }
@@ -56,6 +59,7 @@ export class AuthService {
     this.localGameService.clear()
     localStorage.removeItem('auth-token')
     localStorage.removeItem('auth-username')
+    localStorage.removeItem('auth-id')
     router.navigate(['login'])
   }
 }

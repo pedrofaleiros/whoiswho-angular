@@ -8,6 +8,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { NavGameEnvButtonComponent } from "../../components/nav-game-env-button/nav-game-env-button.component";
 import { LocalGameSwitchesComponent } from "../../components/local-game-switches/local-game-switches.component";
+import { LocalGame } from '../../models/local-game';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-local-game',
@@ -59,6 +61,17 @@ export class LocalGameComponent {
 
     if (!this.service.useUserGameEnvs && !this.service.useDefaultGameEnvs) return
 
-    this.router.navigate(['play'])
+    let data = this.service.getGameData()
+    this.service.setGame(new LocalGame("", []))
+
+    this.service.startGame(data).subscribe({
+      next: (data: LocalGame) => {
+        this.service.setGame(data)
+        this.router.navigate(['play'])
+      },
+      error: (err: HttpErrorResponse) => {
+
+      }
+    })
   }
 }

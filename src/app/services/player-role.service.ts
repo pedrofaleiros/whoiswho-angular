@@ -7,7 +7,7 @@ import { PlayerRole } from '../models/player-role';
 })
 export class PlayerRoleService {
 
-  API_URL = "http://192.168.0.129:8080/playerRole"
+  API_URL = "http://192.168.0.130:8080/playerRole"
   httpClient = inject(HttpClient)
 
   constructor() { }

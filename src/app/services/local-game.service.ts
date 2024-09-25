@@ -1,4 +1,7 @@
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { LocalGame } from '../models/local-game';
+import { CreateLocalGame } from '../models/create-local-game';
 
 interface Player {
   id: string
@@ -14,17 +17,24 @@ export class LocalGameService {
   private useDefaultKey = 'useDefaultGameEnvs';
   private useUserKey = 'useUserGameEnvs';
   private impostorsKey = 'impostors';
+  private localGameKey = 'localGame';
+
+  API_URL = "http://192.168.0.130:8080/game"
+  httpClient = inject(HttpClient)
 
   players: string[] = []
   useDefaultGameEnvs = true;
   useUserGameEnvs = true;
   impostors: number = 1
 
+  game = new LocalGame("", [])
+
   constructor() {
     const lsPlayers = localStorage.getItem(this.playersKey);
     const useDefault = localStorage.getItem(this.useDefaultKey) ?? "false";
     const useUser = localStorage.getItem(this.useUserKey) ?? "false";
     const lsImpostors = localStorage.getItem(this.impostorsKey);
+    const auxLocalGame = localStorage.getItem(this.localGameKey)
 
     if (lsPlayers) {
       this.players = JSON.parse(lsPlayers)
@@ -34,6 +44,17 @@ export class LocalGameService {
     if (lsImpostors !== null) {
       this.impostors = +lsImpostors
     }
+    if (auxLocalGame) {
+      this.game = JSON.parse(auxLocalGame)
+    }
+  }
+
+  getGameData(): CreateLocalGame {
+    return new CreateLocalGame(this.players, this.impostors, this.getUseUser(), this.getUseDefault())
+  }
+
+  startGame(data: CreateLocalGame) {
+    return this.httpClient.post<LocalGame>(this.API_URL, data)
   }
 
   getImpostors() {
@@ -56,6 +77,7 @@ export class LocalGameService {
   getUseUser() {
     return this.useUserGameEnvs
   }
+
   setUseUser(value: boolean) {
     localStorage.setItem(this.useUserKey, value ? "true" : "false");
     this.useUserGameEnvs = value
@@ -73,11 +95,17 @@ export class LocalGameService {
     }
   }
 
+  setGame(data: LocalGame) {
+    this.game = data
+    localStorage.setItem(this.localGameKey, JSON.stringify(this.game))
+  }
+
   clear() {
     this.setUseDefault(true)
     this.setUseUser(true)
     this.setImpostors(1)
     this.players = []
     localStorage.setItem(this.playersKey, JSON.stringify(this.players));
+    this.setGame(new LocalGame("", []))
   }
 }

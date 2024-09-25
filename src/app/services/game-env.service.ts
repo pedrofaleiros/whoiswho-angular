@@ -7,7 +7,7 @@ import { GameEnv } from '../models/game-env';
 })
 export class GameEnvService {
 
-  API_URL = "http://192.168.0.129:8080/gameEnv"
+  API_URL = "http://192.168.0.130:8080/gameEnv"
   httpClient = inject(HttpClient)
 
   constructor() { }

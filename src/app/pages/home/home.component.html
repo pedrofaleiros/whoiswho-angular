@@ -1,5 +1,10 @@
 <app-app-bar></app-app-bar>
 
+<div class="mt-32 flex justify-center flex-row gap-2">
+  <input type="text" [(ngModel)]="room" class="bg-gray-800 text-gray-100" />
+  <button (click)="navigateRoom()" class="bg-green-500 px-4">ir</button>
+</div>
+
 <div class="mt-32 flex justify-center">
   <button
     (click)="navigateLocalGame()"
