@@ -3,13 +3,13 @@
 <div *ngIf="roomData != null" class="m-4 flex-col flex gap-4">
   <div>
     <p
-      *ngIf="getUsers().length > 0"
+      *ngIf="roomData.users.length > 0"
       class="uppercase text-gray-500 font-medium text-sm p-1"
     >
       Jogadores
     </p>
     <ul
-      *ngFor="let user of getUsers(); let last = last; let first = first"
+      *ngFor="let user of roomData.users; let last = last; let first = first"
       class="bg-gray-900 rounded-lg"
     >
       <li
@@ -84,7 +84,7 @@
   </div>
 
   <!-- Impostors -->
-  <div
+  <button
     (click)="updateImpostors()"
     class="bg-gray-900 p-3 rounded-lg flex flex-row justify-between cursor-pointer"
   >
@@ -100,5 +100,5 @@
         />
       </ng-container>
     </div>
-  </div>
+  </button>
 </div>

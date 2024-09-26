@@ -3,7 +3,7 @@ import SockJS from 'sockjs-client';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Client, IMessage } from '@stomp/stompjs';
 import { Router } from '@angular/router';
-import { Room } from '../models/room';
+import { Room, RoomStatus, User } from '../models/room';
 import { UpdateRoomDTO } from '../models/update-room-dto';
 
 @Injectable({
@@ -14,7 +14,16 @@ export class RoomService {
   router = inject(Router)
   private stompClient: Client | null = null
 
-  private roomDataSubject: BehaviorSubject<Room | null> = new BehaviorSubject<Room | null>(null)
+  private roomDataSubject: BehaviorSubject<Room> = new BehaviorSubject<Room>({
+    id: "",
+    owner: { id: "", username: "" },
+    users: [],
+    status: RoomStatus.IDLE,
+    impostors: 1,
+    includeDefaultGameEnvs: true,
+    includeUserGameEnvs: true
+  })
+
   public roomData$ = this.roomDataSubject.asObservable()
 
   connect(room: string) {
@@ -29,31 +38,49 @@ export class RoomService {
 
       this.stompClient?.subscribe(`/topic/${room}/roomData`, (message: IMessage) => {
         const data: Room = JSON.parse(message.body)
-        this.roomDataSubject.next(data)
+
+        let updated = {
+          id: data.id,
+          owner: data.owner,
+          status: RoomStatus.IDLE,
+          impostors: data.impostors,
+          includeDefaultGameEnvs: data.includeDefaultGameEnvs,
+          includeUserGameEnvs: data.includeUserGameEnvs,
+          users: this.roomDataSubject.value.users
+        }
+
+        this.roomDataSubject.next(updated)
+      })
+
+      this.stompClient?.subscribe(`/topic/${room}/users`, (message: IMessage) => {
+        const data: User[] = JSON.parse(message.body)
+
+        let updated = {
+          id: this.roomDataSubject.value.id,
+          owner: this.roomDataSubject.value.owner,
+          status: this.roomDataSubject.value.status,
+          impostors: this.roomDataSubject.value.impostors,
+          includeDefaultGameEnvs: this.roomDataSubject.value.includeDefaultGameEnvs,
+          includeUserGameEnvs: this.roomDataSubject.value.includeUserGameEnvs,
+          users: data
+        }
+
+        this.roomDataSubject.next(updated)
       })
 
       this.stompClient?.subscribe("/user/queue/errors", (message: IMessage) => {
         let data: string = message.body
         if (data) {
-          this.stompClient?.deactivate()
-          this.router.navigate(["home"])
           alert(data)
         }
+        this.stompClient?.deactivate()
+        this.router.navigate(["home"])
       })
 
       this.stompClient?.subscribe("/user/queue/warnings", (message: IMessage) => {
         let data: string = message.body
         if (data) {
           alert(data)
-        }
-      })
-
-      this.stompClient?.subscribe("/user/queue/joinResponse", (message: IMessage) => {
-        let data: string = message.body
-        if (data) {
-          console.log('Join Response: ' + data)
-        } else {
-          this.router.navigate(['home'])
         }
       })
 
@@ -112,7 +139,15 @@ export class RoomService {
   leaveRoom() {
     if (this.stompClient && this.roomDataSubject.value?.id) {
       this.stompClient.deactivate()
-      this.roomDataSubject.next(null)
+      this.roomDataSubject.next({
+        id: "",
+        owner: { id: "", username: "" },
+        users: [],
+        status: RoomStatus.IDLE,
+        impostors: 1,
+        includeDefaultGameEnvs: true,
+        includeUserGameEnvs: true
+      })
     }
   }
 

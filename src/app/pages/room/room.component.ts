@@ -2,7 +2,7 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RoomService } from '../../services/room.service';
 import { FormsModule } from '@angular/forms';
-import { Room, User } from '../../models/room';
+import { Room } from '../../models/room';
 import { CommonModule } from '@angular/common';
 import { BackButtonComponent } from "../../components/back-button/back-button.component";
 
@@ -16,29 +16,10 @@ export class RoomComponent implements OnInit, OnDestroy {
   activatedRoute = inject(ActivatedRoute)
   roomService = inject(RoomService)
 
-  messageContent: string = ''
-
   roomData: Room | null = null
 
   userId: string = ""
   username: string = ""
-
-  getUsers(): User[] {
-    if (this.roomData) {
-      return this.roomData?.users
-    }
-    return []
-  }
-
-  isADM() {
-    // return this.userId === this.roomData?.owner.id
-    return this.username === this.roomData?.owner.username
-  }
-
-  isMe(username: string) {
-    // return this.userId === id
-    return this.username === username
-  }
 
   ngOnInit(): void {
     let room = this.activatedRoute.snapshot.params["id"]
@@ -61,25 +42,19 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.roomService.disconnect();
   }
 
+  updateIncludeDefault() { if (this.isADM()) this.roomService.updateIncludeDefault() }
+  updateIncludeUser() { if (this.isADM()) this.roomService.updateIncludeUser() }
+  updateImpostors() { if (this.isADM()) this.roomService.updateImpostors() }
+
+  //TODO: comparar pelo ID
+  isADM() {
+    return this.username === this.roomData?.owner.username
+  }
+  isMe(username: string) {
+    return this.username === username
+  }
+
   private beforeUnloadHandler(event: any): void {
     this.roomService.disconnect();
-  }
-
-  updateIncludeDefault() {
-    if (this.isADM()) {
-      this.roomService.updateIncludeDefault()
-    }
-  }
-
-  updateIncludeUser() {
-    if (this.isADM()) {
-      this.roomService.updateIncludeUser()
-    }
-  }
-
-  updateImpostors() {
-    if (this.isADM()) {
-      this.roomService.updateImpostors()
-    }
   }
 }
