@@ -31,7 +31,7 @@
   </div>
 
   <!-- Switches -->
-  <div>
+  <div *ngIf="isADM()">
     <div class="bg-gray-900 rounded-t-lg p-3 flex flex-row justify-between">
       <span>Ambientes padrão</span>
 
@@ -85,8 +85,12 @@
 
   <!-- Impostors -->
   <button
-    (click)="updateImpostors()"
-    class="bg-gray-900 p-3 rounded-lg flex flex-row justify-between cursor-pointer"
+    (click)="isADM() ? updateImpostors() : null"
+    class="bg-gray-900 p-3 rounded-lg flex flex-row justify-between"
+    [ngClass]="{
+      'cursor-pointer': isADM(),
+      'cursor-default': !isADM(),
+    }"
   >
     <span>Impostores</span>
     <div class="flex flex-row gap-1">

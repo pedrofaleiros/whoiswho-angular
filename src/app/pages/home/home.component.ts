@@ -18,8 +18,14 @@ export class HomeComponent {
 
   router = inject(Router)
 
-  navigateLocalGame() {
-    this.router.navigate(['game'])
+  // navigateLocalGame() {
+  //   this.router.navigate(['game'])
+  // }
+
+  createRoom(){
+    //TODO: implementar create room
+    let createdRoom = 1234
+    this.router.navigate(['room', createdRoom])
   }
 
   navigateRoom() {
