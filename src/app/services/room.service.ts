@@ -5,6 +5,7 @@ import { Client, IMessage } from '@stomp/stompjs';
 import { Router } from '@angular/router';
 import { Room, RoomStatus, User } from '../models/room';
 import { UpdateRoomDTO } from '../models/update-room-dto';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -153,5 +154,11 @@ export class RoomService {
 
   disconnect() {
     this.leaveRoom()
+  }
+
+  API_URL = "http://192.168.0.130:8080/room"
+  httpClient = inject(HttpClient)
+  createRoom(){
+    return this.httpClient.post<string>(this.API_URL, {})
   }
 }

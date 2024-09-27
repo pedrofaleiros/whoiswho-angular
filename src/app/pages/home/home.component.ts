@@ -5,6 +5,7 @@ import { GameEnvListComponent } from "../../components/game-env-list/game-env-li
 import { LoginComponent } from "../login/login.component";
 import { Router, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { RoomService } from '../../services/room.service';
 
 @Component({
   selector: 'app-home',
@@ -16,16 +17,22 @@ export class HomeComponent {
 
   room: string = ''
 
+  roomService = inject(RoomService)
   router = inject(Router)
 
   // navigateLocalGame() {
   //   this.router.navigate(['game'])
   // }
 
-  createRoom(){
-    //TODO: implementar create room
-    let createdRoom = 1234
-    this.router.navigate(['room', createdRoom])
+  createRoom() {
+    this.roomService.createRoom().subscribe({
+      next: (data) => {
+        this.router.navigate(['room', data])
+      },
+      error: (err) => {
+
+      }
+    })
   }
 
   navigateRoom() {
