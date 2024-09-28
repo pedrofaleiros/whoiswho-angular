@@ -68,6 +68,12 @@ export class RoomService {
 
         this.roomDataSubject.next(updated)
       })
+      
+      this.stompClient?.subscribe(`/topic/${room}/game`, (message: IMessage) => {
+        const data = message.body
+        console.log(data)
+
+      })
 
       this.stompClient?.subscribe("/user/queue/errors", (message: IMessage) => {
         let data: string = message.body
@@ -133,6 +139,14 @@ export class RoomService {
       this.stompClient.publish({
         destination: `/app/update/${this.roomDataSubject.value.id}`,
         body: JSON.stringify(data)
+      })
+    }
+  }
+  
+  startGame() {
+    if (this.stompClient && this.roomDataSubject.value?.id) {
+      this.stompClient.publish({
+        destination: `/app/startGame/${this.roomDataSubject.value.id}`,
       })
     }
   }

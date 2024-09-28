@@ -1,6 +1,8 @@
 <app-back-button text="Sair da sala"></app-back-button>
-
-<div *ngIf="roomData != null" class="m-4 flex-col flex gap-4">
+<div
+  *ngIf="roomData != null && roomData.id !== ''"
+  class="m-4 flex-col flex gap-4"
+>
   <div>
     <p
       *ngIf="roomData.users.length > 0"
@@ -105,4 +107,6 @@
       </ng-container>
     </div>
   </button>
+
+  <button (click)="startGame()">Iniciar Jogo</button>
 </div>

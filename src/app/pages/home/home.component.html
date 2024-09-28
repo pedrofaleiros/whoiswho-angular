@@ -1,14 +1,39 @@
 <app-app-bar></app-app-bar>
-
+<!-- 
 <div class="mt-32 flex justify-center flex-row gap-2">
   <input type="text" [(ngModel)]="room" class="bg-gray-800 text-gray-100" />
   <button (click)="navigateRoom()" class="bg-green-500 px-4">ir</button>
-</div>
+</div> -->
 
-<div class="mt-32 flex justify-center">
+<div class="p-4 mt-32 flex flex-col items-center gap-8">
+  <form
+    class="max-w-sm w-full flex flex-col gap-4"
+    [formGroup]="roomForm"
+    (submit)="navigateRoom()"
+  >
+    <input
+      type="number"
+      formControlName="roomId"
+      placeholder="Código da sala"
+      class="text-center appearance-none border-2 rounded-md w-full py-3 px-3 border-gray-500 bg-gray-900 focus:outline-none focus:border-gray-300 focus:bg-gray-800 hover:bg-gray-800 font-mono"
+    />
+    <button
+      type="submit"
+      class="font-mono w-full max-w-sm rounded-md py-2 text-base font-medium hover:bg-gray-900 flex justify-center border-2 border-blue-600 text-blue-600"
+    >
+      Entrar
+    </button>
+  </form>
+
+  <div class="flex flex-row items-center gap-4 w-full max-w-xs my-2">
+    <hr class="h-[0.5px] w-full bg-gray-500 mt-1 border-none" />
+    <p class="text-gray-500 text-sm font-medium">ou</p>
+    <hr class="h-[0.5px] w-full bg-gray-500 mt-1 border-none" />
+  </div>
+
   <button
     (click)="createRoom()"
-    class="w-4/5 active:bg-gray-900 max-w-sm p-3 font-mono text-base text-green-600 border-green-600 rounded-lg border-2"
+    class="font-mono w-full max-w-sm rounded-md py-2 text-base font-medium hover:bg-gray-900 flex justify-center border-2 border-green-500 text-green-500"
   >
     Criar uma sala
   </button>
