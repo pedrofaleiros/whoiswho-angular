@@ -6,163 +6,148 @@ import { Router } from '@angular/router';
 import { Room, RoomStatus, User } from '../models/room';
 import { UpdateRoomDTO } from '../models/update-room-dto';
 import { HttpClient } from '@angular/common/http';
+import { Game } from '../models/game';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomService {
 
+  API_URL = "http://192.168.0.130:8080"
+  httpClient = inject(HttpClient)
   router = inject(Router)
   private stompClient: Client | null = null
 
-  private roomDataSubject: BehaviorSubject<Room> = new BehaviorSubject<Room>({
-    id: "",
-    owner: { id: "", username: "" },
-    users: [],
-    status: RoomStatus.IDLE,
-    impostors: 1,
-    includeDefaultGameEnvs: true,
-    includeUserGameEnvs: true
-  })
-
+  private roomDataSubject: BehaviorSubject<Room | null> = new BehaviorSubject<Room | null>(null)
+  private usersSubject: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([])
+  private gameSubject: BehaviorSubject<Game | null> = new BehaviorSubject<Game | null>(null)
+  
   public roomData$ = this.roomDataSubject.asObservable()
+  public users$ = this.usersSubject.asObservable()
+  public game$ = this.gameSubject.asObservable()
 
   connect(room: string) {
     let username = localStorage.getItem('auth-username') ?? "";
 
     this.stompClient = new Client({
-      webSocketFactory: () => new SockJS("http://192.168.0.130:8080/ws"),
+      webSocketFactory: () => new SockJS(`${this.API_URL}/ws`),
       // debug: (str) => console.log(str)
     })
 
-    this.stompClient.onConnect = () => {
-
-      this.stompClient?.subscribe(`/topic/${room}/roomData`, (message: IMessage) => {
-        const data: Room = JSON.parse(message.body)
-
-        let updated = {
-          id: data.id,
-          owner: data.owner,
-          status: RoomStatus.IDLE,
-          impostors: data.impostors,
-          includeDefaultGameEnvs: data.includeDefaultGameEnvs,
-          includeUserGameEnvs: data.includeUserGameEnvs,
-          users: this.roomDataSubject.value.users
-        }
-
-        this.roomDataSubject.next(updated)
-      })
-
-      this.stompClient?.subscribe(`/topic/${room}/users`, (message: IMessage) => {
-        const data: User[] = JSON.parse(message.body)
-
-        let updated = {
-          id: this.roomDataSubject.value.id,
-          owner: this.roomDataSubject.value.owner,
-          status: this.roomDataSubject.value.status,
-          impostors: this.roomDataSubject.value.impostors,
-          includeDefaultGameEnvs: this.roomDataSubject.value.includeDefaultGameEnvs,
-          includeUserGameEnvs: this.roomDataSubject.value.includeUserGameEnvs,
-          users: data
-        }
-
-        this.roomDataSubject.next(updated)
-      })
-      
-      this.stompClient?.subscribe(`/topic/${room}/game`, (message: IMessage) => {
-        const data = message.body
-        console.log(data)
-
-      })
-
-      this.stompClient?.subscribe("/user/queue/errors", (message: IMessage) => {
-        let data: string = message.body
-        if (data) {
-          alert(data)
-        }
-        this.stompClient?.deactivate()
-        this.router.navigate(["home"])
-      })
-
-      this.stompClient?.subscribe("/user/queue/warnings", (message: IMessage) => {
-        let data: string = message.body
-        if (data) {
-          alert(data)
-        }
-      })
-
-      this.stompClient?.publish({
-        destination: `/app/join/${room}`,
-        body: username
-      })
-    }
+    this.stompClient.onConnect = () => this.onConnect(room, username);
 
     this.stompClient.activate()
   }
 
+  private onConnect(room: string, username: string) {
+    this.stompClient?.subscribe(`/topic/${room}/roomData`, (message: IMessage) => {
+      const data: Room = JSON.parse(message.body);
+      this.roomDataSubject.next(data);
+    });
+
+    this.stompClient?.subscribe(`/user/queue/roomData`, (message: IMessage) => {
+      const data: Room = JSON.parse(message.body);
+      this.roomDataSubject.next(data);
+    });
+
+    this.stompClient?.subscribe(`/topic/${room}/users`, (message: IMessage) => {
+      const data: User[] = JSON.parse(message.body);
+      this.usersSubject.next(data);
+    });
+
+    this.stompClient?.subscribe(`/topic/${room}/gameData`, (message: IMessage) => {
+      const data: Game = JSON.parse(message.body);
+      this.gameSubject.next(data)
+    });
+    
+    this.stompClient?.subscribe(`/user/queue/gameData`, (message: IMessage) => {
+      const data: Game = JSON.parse(message.body);
+      this.gameSubject.next(data)
+    });
+
+    this.stompClient?.subscribe("/user/queue/errors", (message: IMessage) => {
+      let data: string = message.body;
+      if (data) {
+        alert(data);
+      }
+      this.stompClient?.deactivate();
+      this.router.navigate(["home"]);
+    });
+
+    this.stompClient?.subscribe("/user/queue/warnings", (message: IMessage) => {
+      let data: string = message.body;
+      if (data) {
+        alert(data);
+      }
+    });
+
+    this.stompClient?.publish({
+      destination: `/app/join/${room}`,
+      body: username
+    });
+  }
+
   updateIncludeDefault() {
-    if (this.roomDataSubject.value != null) {
+    let roomData = this.roomDataSubject.value
+    if (roomData) {
       let data = {
-        includeDefaultGameEnvs: !this.roomDataSubject.value?.includeDefaultGameEnvs,
-        impostors: this.roomDataSubject.value?.impostors,
-        includeUserGameEnvs: this.roomDataSubject.value?.includeUserGameEnvs,
+        includeDefaultGameEnvs: !roomData.includeDefaultGameEnvs,
+        impostors: roomData.impostors,
+        includeUserGameEnvs: roomData.includeUserGameEnvs,
       }
       this.updateRoomData(data)
     }
   }
 
   updateIncludeUser() {
-    if (this.roomDataSubject.value != null) {
+    let roomData = this.roomDataSubject.value
+    if (roomData) {
       let data = {
-        includeUserGameEnvs: !this.roomDataSubject.value?.includeUserGameEnvs,
-        impostors: this.roomDataSubject.value?.impostors,
-        includeDefaultGameEnvs: this.roomDataSubject.value?.includeDefaultGameEnvs,
+        includeUserGameEnvs: !roomData.includeUserGameEnvs,
+        impostors: roomData.impostors,
+        includeDefaultGameEnvs: roomData.includeDefaultGameEnvs,
       }
       this.updateRoomData(data)
     }
   }
 
   updateImpostors() {
-    if (this.roomDataSubject.value != null) {
-      let impostors: number = this.roomDataSubject.value?.impostors
+    let roomData = this.roomDataSubject.value
+    if (roomData) {
+      let impostors: number = roomData.impostors
       let data = {
         impostors: impostors === 1 ? 2 : impostors === 2 ? 3 : 1,
-        includeUserGameEnvs: this.roomDataSubject.value?.includeUserGameEnvs,
-        includeDefaultGameEnvs: this.roomDataSubject.value?.includeDefaultGameEnvs,
+        includeUserGameEnvs: roomData.includeUserGameEnvs,
+        includeDefaultGameEnvs: roomData.includeDefaultGameEnvs,
       }
       this.updateRoomData(data)
     }
   }
 
   updateRoomData(data: UpdateRoomDTO) {
-    if (this.stompClient && this.roomDataSubject.value?.id) {
+    let room = this.roomDataSubject.value?.id
+    if (this.stompClient && room) {
       this.stompClient.publish({
-        destination: `/app/update/${this.roomDataSubject.value.id}`,
+        destination: `/app/update/${room}`,
         body: JSON.stringify(data)
       })
     }
   }
-  
+
   startGame() {
-    if (this.stompClient && this.roomDataSubject.value?.id) {
+    let room = this.roomDataSubject.value?.id
+    if (this.stompClient && room) {
       this.stompClient.publish({
-        destination: `/app/startGame/${this.roomDataSubject.value.id}`,
+        destination: `/app/startGame/${room}`,
       })
     }
   }
 
   leaveRoom() {
-    if (this.stompClient && this.roomDataSubject.value?.id) {
+    let room = this.roomDataSubject.value?.id
+    if (this.stompClient && room) {
       this.stompClient.deactivate()
-      this.roomDataSubject.next({
-        id: "",
-        owner: { id: "", username: "" },
-        users: [],
-        status: RoomStatus.IDLE,
-        impostors: 1,
-        includeDefaultGameEnvs: true,
-        includeUserGameEnvs: true
-      })
+      this.roomDataSubject.next(null)
     }
   }
 
@@ -170,9 +155,7 @@ export class RoomService {
     this.leaveRoom()
   }
 
-  API_URL = "http://192.168.0.130:8080/room"
-  httpClient = inject(HttpClient)
-  createRoom(){
-    return this.httpClient.post<string>(this.API_URL, {})
+  createRoom() {
+    return this.httpClient.post<string>(`${this.API_URL}/room`, {})
   }
 }

@@ -1,17 +1,24 @@
 <app-back-button text="Sair da sala"></app-back-button>
+<p
+  class="text-center m-4 text-lg font-mono font-medium text-red-600"
+  *ngIf="roomData"
+>
+  Sala {{ roomData.id }}
+</p>
+
 <div
-  *ngIf="roomData != null && roomData.id !== ''"
+  *ngIf="roomData != null && roomData.status == 'IDLE'"
   class="m-4 flex-col flex gap-4"
 >
   <div>
     <p
-      *ngIf="roomData.users.length > 0"
+      *ngIf="users.length > 0"
       class="uppercase text-gray-500 font-medium text-sm p-1"
     >
       Jogadores
     </p>
     <ul
-      *ngFor="let user of roomData.users; let last = last; let first = first"
+      *ngFor="let user of users; let last = last; let first = first"
       class="bg-gray-900 rounded-lg"
     >
       <li
@@ -109,4 +116,43 @@
   </button>
 
   <button (click)="startGame()">Iniciar Jogo</button>
+</div>
+
+<div
+  class="m-4"
+  *ngIf="roomData != null && roomData.status == 'PLAYING' && game != null"
+>
+  <p class="text-lg font-medium font-mono text-gray-400 text-center">
+    A partida foi iniciada
+  </p>
+
+  <div class="mt-16 flex flex-col gap-4" *ngIf="userGamePlayer?.impostor">
+    <img
+      src="/assets/whoiswho-logo.svg"
+      alt="WhoIsWho Logo"
+      class="size-16 text-center w-full"
+    />
+    <p class="text-center text-xl font-semibold font-mono text-red-600">
+      Você é um impostor
+    </p>
+  </div>
+
+  <div
+    class="mt-8 flex flex-col gap-2"
+    *ngIf="!userGamePlayer?.impostor && userGamePlayer?.playerRole != null"
+  >
+    <div
+      class="text-base flex flex-row bg-gray-900 p-3 rounded-lg justify-between"
+    >
+      <span class="text-gray-500 font-medium">Local:</span>
+      <p class="text-blue-600">{{ game.gameEnvironment.name }}</p>
+    </div>
+
+    <div
+      class="text-base flex flex-row bg-gray-900 p-3 rounded-lg justify-between"
+    >
+      <span class="text-gray-500 font-medium">Papel:</span>
+      <p class="text-blue-600">{{ userGamePlayer?.playerRole?.name }}</p>
+    </div>
+  </div>
 </div>

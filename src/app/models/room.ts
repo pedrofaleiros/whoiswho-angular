@@ -5,13 +5,13 @@ export interface User {
 
 export enum RoomStatus {
     IDLE = 'IDLE',
-    ACTIVE = 'PLAYING',
+    PLAYING = 'PLAYING',
 }
 
 export interface Room {
     id: string;
     owner: User;
-    users: User[];
+    // users: User[];
     status: RoomStatus;
     impostors: number;
     includeDefaultGameEnvs: boolean;
