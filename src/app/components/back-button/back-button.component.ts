@@ -13,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
       class="flex flex-row items-center mt-2 text-blue-600 active:text-blue-400"
     >
       <mat-icon class="">chevron_left</mat-icon>
-      <button class="text-lg">{{text}} </button>
+      <button class="text-base">{{text}} </button>
     </div>
   `,
 })

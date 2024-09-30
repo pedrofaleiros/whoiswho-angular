@@ -14,7 +14,11 @@ export const routes: Routes = [
     { path: "", redirectTo: "home", pathMatch: "full" },
     { path: "login", component: LoginComponent },
     { path: "signup", component: SignupComponent },
-    { path: "room/:id", component: RoomComponent },
+    {
+        path: "room/:id",
+        component: RoomComponent,
+        canActivate: [AuthGuardService]
+    },
     {
         path: "",
         component: MainComponent,

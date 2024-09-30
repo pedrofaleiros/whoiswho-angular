@@ -1,6 +1,6 @@
 <app-back-button text="Sair da sala"></app-back-button>
 <p
-  class="text-center m-4 text-lg font-mono font-medium text-red-600"
+  class="text-start m-4 text-lg font-mono font-medium text-green-600"
   *ngIf="roomData"
 >
   Sala {{ roomData.id }}
@@ -115,7 +115,13 @@
     </div>
   </button>
 
-  <button (click)="startGame()">Iniciar Jogo</button>
+  <button
+    class="bg-gray-900 p-3 rounded-lg text-green-500 active:bg-gray-800"
+    *ngIf="isADM()"
+    (click)="startGame()"
+  >
+    Iniciar Jogo
+  </button>
 </div>
 
 <div
@@ -154,5 +160,15 @@
       <span class="text-gray-500 font-medium">Papel:</span>
       <p class="text-blue-600">{{ userGamePlayer?.playerRole?.name }}</p>
     </div>
+  </div>
+
+  <div class="w-full flex justify-center">
+    <button
+      class="w-full mt-16 bg-gray-900 p-3 rounded-lg text-green-500 active:bg-gray-800"
+      *ngIf="isADM()"
+      (click)="finishGame()"
+    >
+      Finalizar partida
+    </button>
   </div>
 </div>

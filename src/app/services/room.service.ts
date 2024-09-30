@@ -142,6 +142,15 @@ export class RoomService {
       })
     }
   }
+  
+  finishGame() {
+    let room = this.roomDataSubject.value?.id
+    if (this.stompClient && room) {
+      this.stompClient.publish({
+        destination: `/app/finishGame/${room}`,
+      })
+    }
+  }
 
   leaveRoom() {
     let room = this.roomDataSubject.value?.id

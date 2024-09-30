@@ -62,16 +62,18 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   startGame() { if (this.isADM()) this.roomService.startGame() }
 
+  finishGame() { if (this.isADM()) this.roomService.finishGame() }
+
   //TODO: comparar pelo ID
   isADM() {
     return this.username === this.roomData?.owner.username
   }
-  
+
   //TODO: comparar pelo ID
   isMe(username: string) {
     return this.username === username
   }
-  
+
   //TODO: comparar pelo ID
   getUserRole(): GamePlayer | null {
     if (this.game) {
