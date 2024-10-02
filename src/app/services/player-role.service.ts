@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { PlayerRole } from '../models/player-role';
+import { environment } from '../../environment/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlayerRoleService {
 
-  API_URL = "http://192.168.0.130:8080/playerRole"
+  API_URL = `${environment.API_URL}/playerRole`
   httpClient = inject(HttpClient)
 
   constructor() { }

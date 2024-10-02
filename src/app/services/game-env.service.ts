@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { GameEnv } from '../models/game-env';
+import { environment } from '../../environment/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameEnvService {
 
-  API_URL = "http://192.168.0.130:8080/gameEnv"
+  API_URL = `${environment.API_URL}/gameEnv`
   httpClient = inject(HttpClient)
 
   constructor() { }

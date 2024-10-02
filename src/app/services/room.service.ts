@@ -7,13 +7,14 @@ import { Room, RoomStatus, User } from '../models/room';
 import { UpdateRoomDTO } from '../models/update-room-dto';
 import { HttpClient } from '@angular/common/http';
 import { Game } from '../models/game';
+import { environment } from '../../environment/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomService {
 
-  API_URL = "http://192.168.0.130:8080"
+  API_URL = environment.API_URL
   httpClient = inject(HttpClient)
   router = inject(Router)
   private stompClient: Client | null = null

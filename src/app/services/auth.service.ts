@@ -4,6 +4,7 @@ import { AuthResponse } from '../types/auth-response.type';
 import { tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { LocalGameService } from './local-game.service';
+import { environment } from '../../environment/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import { LocalGameService } from './local-game.service';
 export class AuthService {
 
   localGameService = inject(LocalGameService)
-  API_URL = "http://192.168.0.130:8080/auth"
+  API_URL = `${environment.API_URL}/auth`
   httpClient = inject(HttpClient)
 
   constructor() { }

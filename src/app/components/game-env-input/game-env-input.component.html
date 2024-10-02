@@ -11,7 +11,12 @@
     />
     <button
       (click)="onClick()"
-      class="text-green-600 font-medium active:text-green-400 cursor-pointer"
+      [ngClass]="{
+        'text-gray-400': newGameEnv.name === '',
+        'text-green-600': newGameEnv.name !== ''
+      }"
+      [disabled]="!newGameEnv.name"
+      class="font-medium active:text-green-400 cursor-pointer"
     >
       Adicionar
     </button>

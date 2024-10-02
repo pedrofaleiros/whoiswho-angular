@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { LocalGame } from '../models/local-game';
 import { CreateLocalGame } from '../models/create-local-game';
+import { environment } from '../../environment/environment';
 
 interface Player {
   id: string
@@ -19,7 +20,7 @@ export class LocalGameService {
   private impostorsKey = 'impostors';
   private localGameKey = 'localGame';
 
-  API_URL = "http://192.168.0.130:8080/game"
+  API_URL = `${environment.API_URL}/game`
   httpClient = inject(HttpClient)
 
   players: string[] = []
