@@ -21,10 +21,14 @@ export class RoomService {
   private roomDataSubject: BehaviorSubject<Room | null> = new BehaviorSubject<Room | null>(null)
   private usersSubject: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([])
   private gameSubject: BehaviorSubject<Game | null> = new BehaviorSubject<Game | null>(null)
-  
+  private gamesListSubject: BehaviorSubject<Game[]> = new BehaviorSubject<Game[]>([])
+  private countDownSubject: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null)
+
   public roomData$ = this.roomDataSubject.asObservable()
   public users$ = this.usersSubject.asObservable()
   public game$ = this.gameSubject.asObservable()
+  public gamesList$ = this.gamesListSubject.asObservable()
+  public countDown$ = this.countDownSubject.asObservable()
 
   connect(room: string) {
     let username = localStorage.getItem('auth-username') ?? "";
@@ -40,6 +44,7 @@ export class RoomService {
   }
 
   private onConnect(room: string, username: string) {
+
     this.stompClient?.subscribe(`/topic/${room}/roomData`, (message: IMessage) => {
       const data: Room = JSON.parse(message.body);
       this.roomDataSubject.next(data);
@@ -59,10 +64,32 @@ export class RoomService {
       const data: Game = JSON.parse(message.body);
       this.gameSubject.next(data)
     });
-    
+
     this.stompClient?.subscribe(`/user/queue/gameData`, (message: IMessage) => {
       const data: Game = JSON.parse(message.body);
       this.gameSubject.next(data)
+    });
+
+    this.stompClient?.subscribe(`/topic/${room}/gamesList`, (message: IMessage) => {
+      const data: Game[] = JSON.parse(message.body);
+      this.gamesListSubject.next(data)
+    });
+
+    this.stompClient?.subscribe(`/topic/${room}/countdown`, (message: IMessage) => {
+      let data: number | null;
+
+      if (message.body === 'null') {
+        data = null;
+      } else {
+        data = parseInt(message.body, 10);
+      }
+
+      this.countDownSubject.next(data === 0 ? null : data)
+    });
+
+    this.stompClient?.subscribe(`/user/queue/gamesList`, (message: IMessage) => {
+      const data: Game[] = JSON.parse(message.body);
+      this.gamesListSubject.next(data)
     });
 
     this.stompClient?.subscribe("/user/queue/errors", (message: IMessage) => {
@@ -142,7 +169,7 @@ export class RoomService {
       })
     }
   }
-  
+
   finishGame() {
     let room = this.roomDataSubject.value?.id
     if (this.stompClient && room) {
@@ -157,6 +184,10 @@ export class RoomService {
     if (this.stompClient && room) {
       this.stompClient.deactivate()
       this.roomDataSubject.next(null)
+      this.usersSubject.next([])
+      this.gameSubject.next(null)
+      this.gamesListSubject.next([])
+      this.countDownSubject.next(null)
     }
   }
 

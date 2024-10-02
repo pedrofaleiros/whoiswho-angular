@@ -1,27 +1,33 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RoomService } from '../../services/room.service';
 import { FormsModule } from '@angular/forms';
 import { Room, User } from '../../models/room';
 import { CommonModule } from '@angular/common';
 import { BackButtonComponent } from "../../components/back-button/back-button.component";
 import { Game, GamePlayer } from '../../models/game';
+import { Subscription } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-room',
   standalone: true,
-  imports: [FormsModule, CommonModule, BackButtonComponent],
+  imports: [FormsModule, CommonModule, BackButtonComponent, MatIconModule],
   templateUrl: './room.component.html',
 })
 export class RoomComponent implements OnInit, OnDestroy {
+  router = inject(Router)
   activatedRoute = inject(ActivatedRoute)
   roomService = inject(RoomService)
+
+  private subs: Subscription = new Subscription()
 
   roomData: Room | null = null
   users: User[] = []
   game: Game | null = null
-
+  gamesList: Game[] = []
   userGamePlayer: GamePlayer | null = null
+  countDown: number | null = null
 
   userId: string = ""
   username: string = ""
@@ -34,35 +40,41 @@ export class RoomComponent implements OnInit, OnDestroy {
     if (room) {
       this.roomService.connect(room)
 
-      this.roomService.roomData$.subscribe(data => {
-        this.roomData = data
-      })
+      this.subs.add(
+        this.roomService.countDown$.subscribe(data => {
+          this.countDown = data
+        })
+      )
 
-      this.roomService.users$.subscribe(data => {
-        this.users = data
-      })
+      this.subs.add(
+        this.roomService.roomData$.subscribe(data => {
+          this.roomData = data
+        })
+      )
 
-      this.roomService.game$.subscribe(data => {
-        this.game = data
-        this.userGamePlayer = this.getUserRole()
-      })
+      this.subs.add(
+        this.roomService.users$.subscribe(data => {
+          this.users = data
+        }))
+
+      this.subs.add(
+        this.roomService.game$.subscribe(data => {
+          this.game = data
+          this.userGamePlayer = this.getUserRole()
+        })
+      )
+
+      this.subs.add(
+        this.roomService.gamesList$.subscribe(data => {
+          this.gamesList = data
+        })
+      )
+    } else {
+      this.router.navigate(['home'])
     }
 
     window.addEventListener("beforeunload", this.beforeUnloadHandler.bind(this))
   }
-
-  ngOnDestroy() {
-    window.removeEventListener('beforeunload', this.beforeUnloadHandler.bind(this));
-    this.roomService.disconnect();
-  }
-
-  updateIncludeDefault() { if (this.isADM()) this.roomService.updateIncludeDefault() }
-  updateIncludeUser() { if (this.isADM()) this.roomService.updateIncludeUser() }
-  updateImpostors() { if (this.isADM()) this.roomService.updateImpostors() }
-
-  startGame() { if (this.isADM()) this.roomService.startGame() }
-
-  finishGame() { if (this.isADM()) this.roomService.finishGame() }
 
   //TODO: comparar pelo ID
   isADM() {
@@ -84,6 +96,12 @@ export class RoomComponent implements OnInit, OnDestroy {
       return this.game.gamePlayers[index]
     }
     return null
+  }
+
+  ngOnDestroy() {
+    this.roomService.disconnect();
+    this.subs.unsubscribe()
+    window.removeEventListener('beforeunload', this.beforeUnloadHandler.bind(this));
   }
 
   private beforeUnloadHandler(event: any): void {
