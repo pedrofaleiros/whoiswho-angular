@@ -1,0 +1,51 @@
+<div class="">
+  <div class="bg-gray-900 rounded-t-lg p-3 flex flex-row justify-between">
+    <span>Ambientes padrão</span>
+
+    <div class="inline-flex items-center cursor-pointer">
+      <div
+        (click)="handleClickDefault()"
+        class="relative w-11 h-6 bg-gray-500 rounded-full"
+        [ngClass]="{
+          'bg-blue-600': includeDefaultGameEnvs,
+          'bg-gray-500': !includeDefaultGameEnvs
+        }"
+      >
+        <div
+          class="absolute top-[2px] start-[2px] bg-white border-gray-300 border rounded-full h-5 w-5 transition-all"
+          [ngClass]="{
+            'translate-x-full': includeDefaultGameEnvs,
+            'translate-x-0': !includeDefaultGameEnvs
+          }"
+        ></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="h-[1px] bg-gray-800"></div>
+
+  <div class="bg-gray-900 rounded-b-lg p-3 flex flex-row justify-between">
+    <span>Meus ambientes</span>
+
+    <div
+      (click)="handleClickUser()"
+      class="inline-flex items-center cursor-pointer"
+    >
+      <div
+        class="relative w-11 h-6 bg-gray-500 rounded-full"
+        [ngClass]="{
+          'bg-blue-600': includeUserGameEnvs,
+          'bg-gray-500': !includeUserGameEnvs
+        }"
+      >
+        <div
+          class="absolute top-[2px] start-[2px] bg-white border-gray-300 border rounded-full h-5 w-5 transition-all"
+          [ngClass]="{
+            'translate-x-full': includeUserGameEnvs,
+            'translate-x-0': !includeUserGameEnvs
+          }"
+        ></div>
+      </div>
+    </div>
+  </div>
+</div>

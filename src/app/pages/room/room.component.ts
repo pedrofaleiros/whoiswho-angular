@@ -8,11 +8,14 @@ import { BackButtonComponent } from "../../components/back-button/back-button.co
 import { Game, GamePlayer } from '../../models/game';
 import { Subscription } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
+import { UsersListComponent } from "../../components/users-list/users-list.component";
+import { ImpostorsButtonComponent } from "../../components/impostors-button/impostors-button.component";
+import { RoomSwitchesComponent } from "../../components/room-switches/room-switches.component";
 
 @Component({
   selector: 'app-room',
   standalone: true,
-  imports: [FormsModule, CommonModule, BackButtonComponent, MatIconModule],
+  imports: [FormsModule, CommonModule, BackButtonComponent, MatIconModule, UsersListComponent, ImpostorsButtonComponent, RoomSwitchesComponent],
   templateUrl: './room.component.html',
 })
 export class RoomComponent implements OnInit, OnDestroy {
@@ -66,7 +69,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 
       this.subs.add(
         this.roomService.gamesList$.subscribe(data => {
-          this.gamesList = data
+          this.gamesList = data.reverse()
         })
       )
     } else {

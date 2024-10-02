@@ -1,0 +1,33 @@
+<div>
+  <p
+    *ngIf="users.length > 0"
+    class="uppercase text-gray-500 font-medium text-sm p-1"
+  >
+    Jogadores
+  </p>
+  <ul
+    *ngFor="let user of users; let last = last; let first = first"
+    class="bg-gray-900 rounded-lg"
+  >
+    <li
+      class="bg-gray-900 p-3 pl-3 flex flex-row text-gray-300"
+      [ngClass]="{
+      'rounded-b-lg': last,
+      'rounded-t-lg': first,
+  }"
+    >
+      <p class="w-full text-base">
+        {{ user.username }}
+        {{ isMe(user.username) ? " (Você)" : "" }}
+      </p>
+
+      <p
+        class="text-base uppercase text-gray-400 font-medium"
+        *ngIf="user.username === owner.username"
+      >
+        ADM
+      </p>
+    </li>
+    <div class="h-[1px] bg-gray-800" [ngClass]="{ hidden: last }"></div>
+  </ul>
+</div>
