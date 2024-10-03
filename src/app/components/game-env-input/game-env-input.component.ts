@@ -15,7 +15,7 @@ export class GameEnvInputComponent {
   @Input() errorMessage!: string | null;
   @Output() createGameEnv = new EventEmitter<void>();
 
-  onClick() {
+  onSubmit() {
     this.createGameEnv.emit()
   }
 }

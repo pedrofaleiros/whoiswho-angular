@@ -31,7 +31,7 @@
   <div *ngFor="let item of userGameEnvs; let i = index; let count = count">
     <div
       *ngIf="
-        count > 10 && (i === 0 || userGameEnvs[i - 1].name[0] !== item.name[0])
+        count >= 0 && (i === 0 || userGameEnvs[i - 1].name[0] !== item.name[0])
       "
       class="text-sm text-gray-500 font-medium mt-8 uppercase"
     >

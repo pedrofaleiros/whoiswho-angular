@@ -26,10 +26,6 @@ export class HomeComponent {
     })
   }
 
-  // navigateLocalGame() {
-  //   this.router.navigate(['game'])
-  // }
-
   createRoom() {
     this.roomService.createRoom().subscribe({
       next: (data) => {

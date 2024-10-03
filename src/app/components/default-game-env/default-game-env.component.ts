@@ -12,7 +12,7 @@ import { PlayerRoleListComponent } from "../player-role-list/player-role-list.co
   imports: [MatIconModule, CommonModule, PlayerRoleListComponent],
   templateUrl: './default-game-env.component.html',
 })
-export class DefaultGameEnvComponent {
+export class  DefaultGameEnvComponent {
 
   playerRoleService = inject(PlayerRoleService)
   @Input() gameEnv!: GameEnv
