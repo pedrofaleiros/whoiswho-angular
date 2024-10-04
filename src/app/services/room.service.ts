@@ -33,13 +33,24 @@ export class RoomService {
 
   connect(room: string) {
     let username = localStorage.getItem('auth-username') ?? "";
+    let token = localStorage.getItem('auth-token') ?? "";
 
     this.stompClient = new Client({
       webSocketFactory: () => new SockJS(`${this.API_URL}/ws`),
+      reconnectDelay: 0,
+      connectHeaders: {
+        'Authorization': `Bearer ${token}`
+      },
+      onConnect: () => this.onConnect(room, username),
+      onStompError: () => {
+        alert("Erro ao entrar na sala")
+        this.disconnect()
+        this.router.navigate(['home'])
+      },
       // debug: (str) => console.log(str)
     })
 
-    this.stompClient.onConnect = () => this.onConnect(room, username);
+    // this.stompClient.onConnect = () => this.onConnect(room, username);
 
     this.stompClient.activate()
   }
@@ -181,15 +192,14 @@ export class RoomService {
   }
 
   leaveRoom() {
-    let room = this.roomDataSubject.value?.id
-    if (this.stompClient && room) {
-      this.stompClient.deactivate()
-      this.roomDataSubject.next(null)
-      this.usersSubject.next([])
-      this.gameSubject.next(null)
-      this.gamesListSubject.next([])
-      this.countDownSubject.next(null)
-    }
+
+    this.roomDataSubject.next(null)
+    this.usersSubject.next([])
+    this.gameSubject.next(null)
+    this.gamesListSubject.next([])
+    this.countDownSubject.next(null)
+
+    this.stompClient?.deactivate()
   }
 
   disconnect() {
