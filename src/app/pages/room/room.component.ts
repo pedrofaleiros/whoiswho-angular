@@ -32,6 +32,20 @@ export class RoomComponent implements OnInit, OnDestroy {
   userGamePlayer: GamePlayer | null = null
   countDown: number | null = null
 
+  showGameIndex = 0;
+
+  addShowGameIndex(){
+    if(this.showGameIndex + 1 < this.gamesList.length){
+      this.showGameIndex++
+    }
+  }
+  
+  lessShowGameIndex(){
+    if(this.showGameIndex - 1 >= 0){
+      this.showGameIndex--
+    }
+  }
+
   userId: string = ""
   username: string = ""
 
@@ -70,6 +84,7 @@ export class RoomComponent implements OnInit, OnDestroy {
       this.subs.add(
         this.roomService.gamesList$.subscribe(data => {
           this.gamesList = data.reverse()
+          this.showGameIndex = 0
         })
       )
     } else {

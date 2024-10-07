@@ -62,22 +62,43 @@
   <!-- Game Result -->
   <div class="flex flex-col gap-2" *ngIf="gamesList.length > 0">
     <div>
-      <p
-        *ngIf="users.length > 0"
-        class="uppercase text-gray-500 font-medium text-sm p-1"
-      >
-        Resultado
-      </p>
+      <div class="flex flex-row justify-between">
+        <p
+          *ngIf="users.length > 0"
+          class="uppercase text-gray-500 font-medium text-sm p-1"
+        >
+          Resultado
+        </p>
+
+        <div class="flex flex-row gap-2 text-gray-500 font-medium font-mono">
+          <mat-icon
+            [ngClass]="{
+            'text-gray-50 cursor-pointer':
+            showGameIndex + 1 < gamesList.length,
+          }"
+            (click)="addShowGameIndex()"
+            >chevron_left</mat-icon
+          >
+          <span>{{ gamesList.length - showGameIndex }}° </span>
+          <mat-icon
+            [ngClass]="{
+            'text-gray-50 cursor-pointer': showGameIndex - 1 >= 0,
+          }"
+            (click)="lessShowGameIndex()"
+            >chevron_right</mat-icon
+          >
+        </div>
+      </div>
       <div
         class="bg-gray-900 p-3 rounded-lg text-center font-mono text-lg text-gray-400 font-medium"
       >
-        <p>{{ gamesList[0].gameEnvironment.name }}</p>
+        <p>{{ gamesList[showGameIndex].gameEnvironment.name }}</p>
       </div>
     </div>
 
     <div
       class="flex flex-row justify-between p-3 rounded-lg bg-gray-900"
-      *ngFor="let role of gamesList[0].gamePlayers"
+      *ngFor="let role of gamesList[showGameIndex].gamePlayers"
     >
       <p class="text-base text-gray-400 font-medium">
         {{ role.user.username }}

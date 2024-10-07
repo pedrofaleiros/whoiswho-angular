@@ -1,13 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import SockJS from 'sockjs-client';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Client, IMessage } from '@stomp/stompjs';
 import { Router } from '@angular/router';
-import { Room, RoomStatus, User } from '../models/room';
+import { Room, User } from '../models/room';
 import { UpdateRoomDTO } from '../models/update-room-dto';
 import { HttpClient } from '@angular/common/http';
 import { Game } from '../models/game';
 import { environment } from '../../environment/environment';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class RoomService {
   API_URL = environment.API_URL
   httpClient = inject(HttpClient)
   router = inject(Router)
+  toast = inject(ToastrService)
   private stompClient: Client | null = null
 
   private roomDataSubject: BehaviorSubject<Room | null> = new BehaviorSubject<Room | null>(null)
@@ -43,7 +45,8 @@ export class RoomService {
       },
       onConnect: () => this.onConnect(room, username),
       onStompError: () => {
-        alert("Erro ao entrar na sala")
+        this.toast.clear()
+        this.toast.warning("Erro ao entrar na sala")
         this.disconnect()
         this.router.navigate(['home'])
       },
@@ -107,7 +110,8 @@ export class RoomService {
     this.stompClient?.subscribe("/user/queue/errors", (message: IMessage) => {
       let data: string = message.body;
       if (data) {
-        alert(data);
+        this.toast.clear()
+        this.toast.error(data)
       }
       this.stompClient?.deactivate();
       this.router.navigate(["home"]);
@@ -116,7 +120,11 @@ export class RoomService {
     this.stompClient?.subscribe("/user/queue/warnings", (message: IMessage) => {
       let data: string = message.body;
       if (data) {
-        alert(data);
+        // alert(data);
+        this.toast.clear()
+        this.toast.warning(data, '', {
+          positionClass: 'toast-bottom-right'
+        })
       }
     });
 
@@ -174,6 +182,7 @@ export class RoomService {
   }
 
   startGame() {
+    this.toast.clear()
     let room = this.roomDataSubject.value?.id
     if (this.stompClient && room) {
       this.stompClient.publish({
@@ -183,6 +192,7 @@ export class RoomService {
   }
 
   finishGame() {
+    this.toast.clear()
     let room = this.roomDataSubject.value?.id
     if (this.stompClient && room) {
       this.stompClient.publish({
@@ -192,6 +202,7 @@ export class RoomService {
   }
 
   leaveRoom() {
+    this.toast.clear()
 
     this.roomDataSubject.next(null)
     this.usersSubject.next([])
