@@ -15,15 +15,19 @@ export class UsersListComponent {
 
   // userId: string = ""
   username: string = ""
+  userId: string = ""
 
   constructor() {
     // this.userId = localStorage.getItem('auth-id') || ""
+    this.userId = localStorage.getItem('auth-id') || ""
     this.username = localStorage.getItem('auth-username') || ""
   }
 
-  //TODO: comparar pelo ID
-  isMe(username: string) {
-    return this.username === username
+  // isMe(username: string) {
+  //   return this.username === username
+  // }
+  isMe(id: string) {
+    return this.userId === id
   }
 
 }

@@ -34,14 +34,14 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   showGameIndex = 0;
 
-  addShowGameIndex(){
-    if(this.showGameIndex + 1 < this.gamesList.length){
+  addShowGameIndex() {
+    if (this.showGameIndex + 1 < this.gamesList.length) {
       this.showGameIndex++
     }
   }
-  
-  lessShowGameIndex(){
-    if(this.showGameIndex - 1 >= 0){
+
+  lessShowGameIndex() {
+    if (this.showGameIndex - 1 >= 0) {
       this.showGameIndex--
     }
   }
@@ -94,20 +94,15 @@ export class RoomComponent implements OnInit, OnDestroy {
     window.addEventListener("beforeunload", this.beforeUnloadHandler.bind(this))
   }
 
-  //TODO: comparar pelo ID
   isADM() {
-    return this.username === this.roomData?.owner.username
+    // return this.username === this.roomData?.owner.username
+    return this.userId === this.roomData?.owner.id
   }
 
-  //TODO: comparar pelo ID
-  isMe(username: string) {
-    return this.username === username
-  }
-
-  //TODO: comparar pelo ID
   getUserRole(): GamePlayer | null {
     if (this.game) {
-      let index = this.game.gamePlayers.findIndex(el => el.user.username == this.username)
+      // let index = this.game.gamePlayers.findIndex(el => el.user.username == this.username)
+      let index = this.game.gamePlayers.findIndex(el => el.user.id == this.userId)
       if (index == -1) {
         return null
       }

@@ -44,12 +44,12 @@ export class RoomService {
         'Authorization': `Bearer ${token}`
       },
       onConnect: () => this.onConnect(room, username),
-      onStompError: () => {
-        this.toast.clear()
-        this.toast.warning("Erro ao entrar na sala")
-        this.disconnect()
-        this.router.navigate(['home'])
-      },
+      // onStompError: () => {
+      //   this.toast.clear()
+      //   this.toast.warning("Erro ao entrar na sala")
+      //   this.disconnect()
+      //   this.router.navigate(['home'])
+      // },
       // debug: (str) => console.log(str)
     })
 
@@ -109,18 +109,20 @@ export class RoomService {
 
     this.stompClient?.subscribe("/user/queue/errors", (message: IMessage) => {
       let data: string = message.body;
+      
+      this.stompClient?.deactivate();
+      // this.router.navigate(["home"]);
+      
       if (data) {
         this.toast.clear()
         this.toast.error(data)
       }
-      this.stompClient?.deactivate();
-      this.router.navigate(["home"]);
+
     });
 
     this.stompClient?.subscribe("/user/queue/warnings", (message: IMessage) => {
       let data: string = message.body;
       if (data) {
-        // alert(data);
         this.toast.clear()
         this.toast.warning(data, '', {
           positionClass: 'toast-bottom-right'
