@@ -60,7 +60,7 @@ export class RoomService {
 
   private onConnect(room: string, username: string) {
 
-    this.stompClient?.subscribe(`/topic/${room}/roomData`, (message: IMessage) => {
+    this.stompClient?.subscribe(`/topic/${room}.roomData`, (message: IMessage) => {
       const data: Room = JSON.parse(message.body);
       this.roomDataSubject.next(data);
     });
@@ -70,12 +70,12 @@ export class RoomService {
       this.roomDataSubject.next(data);
     });
 
-    this.stompClient?.subscribe(`/topic/${room}/users`, (message: IMessage) => {
+    this.stompClient?.subscribe(`/topic/${room}.users`, (message: IMessage) => {
       const data: User[] = JSON.parse(message.body);
       this.usersSubject.next(data);
     });
 
-    this.stompClient?.subscribe(`/topic/${room}/gameData`, (message: IMessage) => {
+    this.stompClient?.subscribe(`/topic/${room}.gameData`, (message: IMessage) => {
       const data: Game = JSON.parse(message.body);
       this.gameSubject.next(data)
     });
@@ -85,12 +85,12 @@ export class RoomService {
       this.gameSubject.next(data)
     });
 
-    this.stompClient?.subscribe(`/topic/${room}/gamesList`, (message: IMessage) => {
+    this.stompClient?.subscribe(`/topic/${room}.gamesList`, (message: IMessage) => {
       const data: Game[] = JSON.parse(message.body);
       this.gamesListSubject.next(data)
     });
 
-    this.stompClient?.subscribe(`/topic/${room}/countdown`, (message: IMessage) => {
+    this.stompClient?.subscribe(`/topic/${room}.countdown`, (message: IMessage) => {
       let data: number | null;
 
       if (message.body === 'null') {
