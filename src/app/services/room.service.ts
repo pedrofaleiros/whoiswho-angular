@@ -44,16 +44,8 @@ export class RoomService {
         'Authorization': `Bearer ${token}`
       },
       onConnect: () => this.onConnect(room, username),
-      // onStompError: () => {
-      //   this.toast.clear()
-      //   this.toast.warning("Erro ao entrar na sala")
-      //   this.disconnect()
-      //   this.router.navigate(['home'])
-      // },
       // debug: (str) => console.log(str)
     })
-
-    // this.stompClient.onConnect = () => this.onConnect(room, username);
 
     this.stompClient.activate()
   }
@@ -132,7 +124,6 @@ export class RoomService {
 
     this.stompClient?.publish({
       destination: `/app/join/${room}`,
-      body: username
     });
   }
 
