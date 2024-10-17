@@ -12,7 +12,11 @@ export class ImpostorsButtonComponent {
   @Input() impostors: number = 0;
   @Output() onClick = new EventEmitter<void>();
 
+  @Input() isADM: boolean = false
+
   handleClick() {
-    this.onClick.emit();
+    if (this.isADM) {
+      this.onClick.emit();
+    }
   }
 }

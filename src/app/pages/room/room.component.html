@@ -54,7 +54,7 @@
 
   <!-- Impostors -->
   <app-impostors-button
-    *ngIf="isADM()"
+    [isADM]="isADM()"
     [impostors]="roomData.impostors"
     (onClick)="roomService.updateImpostors()"
   ></app-impostors-button>

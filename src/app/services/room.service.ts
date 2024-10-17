@@ -55,11 +55,13 @@ export class RoomService {
     this.stompClient?.subscribe(`/topic/${room}.roomData`, (message: IMessage) => {
       const data: Room = JSON.parse(message.body);
       this.roomDataSubject.next(data);
+      sessionStorage.setItem("last-room", data.id)
     });
 
     this.stompClient?.subscribe(`/user/queue/roomData`, (message: IMessage) => {
       const data: Room = JSON.parse(message.body);
       this.roomDataSubject.next(data);
+      sessionStorage.setItem("last-room", data.id)
     });
 
     this.stompClient?.subscribe(`/topic/${room}.users`, (message: IMessage) => {
@@ -103,12 +105,15 @@ export class RoomService {
       let data: string = message.body;
       
       this.stompClient?.deactivate();
-      // this.router.navigate(["home"]);
       
       if (data) {
         this.toast.clear()
         this.toast.error(data)
       }
+      
+      setTimeout(() => {
+        this.router.navigate(["home"]);
+      }, 3000);
 
     });
 

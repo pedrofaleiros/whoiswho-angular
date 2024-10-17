@@ -1,8 +1,8 @@
 <app-app-bar></app-app-bar>
 
-<div class="p-4 mt-32 flex flex-col items-center gap-8">
+<div class="p-4 px-8 mt-16 flex flex-col items-center gap-4">
   <form
-    class="max-w-sm w-full flex flex-col gap-4"
+    class="max-w-sm w-full flex flex-col gap-2"
     [formGroup]="roomForm"
     (submit)="navigateRoom()"
   >
@@ -10,13 +10,23 @@
       type="number"
       formControlName="roomId"
       placeholder="Código da sala"
-      class="text-center appearance-none border-2 rounded-md w-full py-3 px-3 border-gray-500 bg-gray-900 focus:outline-none focus:border-gray-300 focus:bg-gray-800 hover:bg-gray-800 font-mono"
+      class="text-base text-center appearance-none border-2 rounded-md w-full py-3 px-3 border-gray-500 bg-gray-900 focus:outline-none focus:border-gray-300 focus:bg-gray-800 hover:bg-gray-800 font-mono"
     />
     <button
       type="submit"
       class="font-mono w-full max-w-sm rounded-md py-2 text-base font-medium hover:bg-gray-900 flex justify-center border-2 border-blue-600 text-blue-600"
     >
       Entrar
+    </button>
+
+    <button
+      type="button"
+      (click)="navigateLastRoom()"
+      class="max-w-sm w-full text-green-500 text-base font-medium items-center flex justify-center gap-2 p-3 rounded-lg hover:bg-gray-800"
+      *ngIf="lastRoom"
+    >
+      <span> Sala {{ lastRoom }} </span>
+      <mat-icon>login</mat-icon>
     </button>
   </form>
 
@@ -28,7 +38,7 @@
 
   <button
     (click)="createRoom()"
-    class="font-mono w-full max-w-sm rounded-md py-2 text-base font-medium hover:bg-gray-900 flex justify-center border-2 border-green-500 text-green-500"
+    class="mt-4 font-mono w-full max-w-sm rounded-md py-2 text-base font-medium hover:bg-gray-900 flex justify-center border-2 border-green-500 text-green-500"
   >
     Criar uma sala
   </button>
