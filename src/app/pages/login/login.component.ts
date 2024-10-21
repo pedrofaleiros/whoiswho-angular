@@ -4,11 +4,12 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { AppBarComponent } from "../../components/app-bar/app-bar.component";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, AppBarComponent],
   templateUrl: './login.component.html'
 })
 export class LoginComponent {
@@ -55,6 +56,10 @@ export class LoginComponent {
         this.toast.error(err.error.message)
       }
     })
+  }
+  
+  loginGuest(){
+    this.router.navigate(['guest'])
   }
 
   navigate() {

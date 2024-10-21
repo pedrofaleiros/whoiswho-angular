@@ -11,7 +11,7 @@
   <!-- Start Button -->
   <button
     class="flex flex-row items-center font-medium text-base font-mono text-green-600 active:text-green-400"
-    *ngIf="isADM() && roomData?.status == 'IDLE' && !countDown"
+    *ngIf="isADM() && roomData?.status == 'IDLE' && !countDown && !isLoading"
     (click)="roomService.startGame()"
   >
     <p>Iniciar</p>
@@ -28,6 +28,14 @@
   </button>
 </div>
 
+<div *ngIf="isLoading && !countDown" class="w-full mt-32 flex justify-center">
+  <img
+    src="/assets/loading.svg"
+    alt="loading icon"
+    class="size-6 animate-spin"
+  />
+</div>
+
 <div
   class="text-lg font-medium font-mono text-gray-400 text-center my-16"
   *ngIf="countDown"
@@ -37,7 +45,7 @@
 
 <!-- IDLE -->
 <div
-  *ngIf="roomData != null && roomData.status == 'IDLE' && !countDown"
+  *ngIf="roomData != null && roomData.status == 'IDLE' && !countDown && !isLoading"
   class="m-4 flex-col flex gap-4"
 >
   <!-- Users List -->
@@ -126,7 +134,8 @@
     roomData != null &&
     roomData.status == 'PLAYING' &&
     game != null &&
-    !countDown
+    !countDown &&
+    !isLoading
   "
 >
   <p class="text-lg font-medium font-mono text-gray-400 text-center my-8">

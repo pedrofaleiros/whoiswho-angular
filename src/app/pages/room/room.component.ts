@@ -25,6 +25,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   private subs: Subscription = new Subscription()
 
+  isLoading = true
   roomData: Room | null = null
   users: User[] = []
   game: Game | null = null
@@ -85,6 +86,12 @@ export class RoomComponent implements OnInit, OnDestroy {
         this.roomService.gamesList$.subscribe(data => {
           this.gamesList = data.reverse()
           this.showGameIndex = 0
+        })
+      )
+
+      this.subs.add(
+        this.roomService.isLoading$.subscribe(data => {
+          this.isLoading = data
         })
       )
     } else {

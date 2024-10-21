@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
         <span class="text-red-600 font-mono text-xl font-bold ml-2">WhoIsWho</span>
       </div>
 
-      <button (click)="navigateProfile()" class="flex flex-row items-center text-blue-600">
+      <button *ngIf="showTrailing" (click)="navigateProfile()" class="flex flex-row items-center text-blue-600">
         <mat-icon>settings</mat-icon>
         
         <!-- <span *ngIf="showUsername" (click)="navigateProfile()"
@@ -30,7 +30,7 @@ import { Router } from '@angular/router';
 })
 export class AppBarComponent {
 
-  @Input() showUsername = true
+  @Input() showTrailing = true
 
   router = inject(Router)
   username = localStorage.getItem('auth-username')

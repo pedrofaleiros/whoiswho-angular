@@ -21,17 +21,19 @@ export class RoomService {
   toast = inject(ToastrService)
   private stompClient: Client | null = null
 
-  private roomDataSubject: BehaviorSubject<Room | null> = new BehaviorSubject<Room | null>(null)
-  private usersSubject: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([])
-  private gameSubject: BehaviorSubject<Game | null> = new BehaviorSubject<Game | null>(null)
-  private gamesListSubject: BehaviorSubject<Game[]> = new BehaviorSubject<Game[]>([])
-  private countDownSubject: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null)
+  private isLoadingSub: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true)
+  private roomDataSub: BehaviorSubject<Room | null> = new BehaviorSubject<Room | null>(null)
+  private usersSub: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([])
+  private gameSub: BehaviorSubject<Game | null> = new BehaviorSubject<Game | null>(null)
+  private gamesListSub: BehaviorSubject<Game[]> = new BehaviorSubject<Game[]>([])
+  private countDownSub: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null)
 
-  public roomData$ = this.roomDataSubject.asObservable()
-  public users$ = this.usersSubject.asObservable()
-  public game$ = this.gameSubject.asObservable()
-  public gamesList$ = this.gamesListSubject.asObservable()
-  public countDown$ = this.countDownSubject.asObservable()
+  public isLoading$ = this.isLoadingSub.asObservable()
+  public roomData$ = this.roomDataSub.asObservable()
+  public users$ = this.usersSub.asObservable()
+  public game$ = this.gameSub.asObservable()
+  public gamesList$ = this.gamesListSub.asObservable()
+  public countDown$ = this.countDownSub.asObservable()
 
   connect(room: string) {
     let username = localStorage.getItem('auth-username') ?? "";
@@ -53,35 +55,37 @@ export class RoomService {
   private onConnect(room: string, username: string) {
 
     this.stompClient?.subscribe(`/topic/${room}.roomData`, (message: IMessage) => {
-      const data: Room = JSON.parse(message.body);
-      this.roomDataSubject.next(data);
+      const data: Room = JSON.parse(message.body)
+      this.roomDataSub.next(data)
+      this.isLoadingSub.next(false)
       sessionStorage.setItem("last-room", data.id)
     });
 
     this.stompClient?.subscribe(`/user/queue/roomData`, (message: IMessage) => {
-      const data: Room = JSON.parse(message.body);
-      this.roomDataSubject.next(data);
+      const data: Room = JSON.parse(message.body)
+      this.roomDataSub.next(data)
+      this.isLoadingSub.next(false)
       sessionStorage.setItem("last-room", data.id)
     });
 
     this.stompClient?.subscribe(`/topic/${room}.users`, (message: IMessage) => {
       const data: User[] = JSON.parse(message.body);
-      this.usersSubject.next(data);
+      this.usersSub.next(data);
     });
 
     this.stompClient?.subscribe(`/topic/${room}.gameData`, (message: IMessage) => {
       const data: Game = JSON.parse(message.body);
-      this.gameSubject.next(data)
+      this.gameSub.next(data)
     });
 
     this.stompClient?.subscribe(`/user/queue/gameData`, (message: IMessage) => {
       const data: Game = JSON.parse(message.body);
-      this.gameSubject.next(data)
+      this.gameSub.next(data)
     });
 
     this.stompClient?.subscribe(`/topic/${room}.gamesList`, (message: IMessage) => {
       const data: Game[] = JSON.parse(message.body);
-      this.gamesListSubject.next(data)
+      this.gamesListSub.next(data)
     });
 
     this.stompClient?.subscribe(`/topic/${room}.countdown`, (message: IMessage) => {
@@ -93,24 +97,24 @@ export class RoomService {
         data = parseInt(message.body, 10);
       }
 
-      this.countDownSubject.next(data === 0 ? null : data)
+      this.countDownSub.next(data === 0 ? null : data)
     });
 
     this.stompClient?.subscribe(`/user/queue/gamesList`, (message: IMessage) => {
       const data: Game[] = JSON.parse(message.body);
-      this.gamesListSubject.next(data)
+      this.gamesListSub.next(data)
     });
 
     this.stompClient?.subscribe("/user/queue/errors", (message: IMessage) => {
       let data: string = message.body;
-      
+
       this.stompClient?.deactivate();
-      
+
       if (data) {
         this.toast.clear()
         this.toast.error(data)
       }
-      
+
       setTimeout(() => {
         this.router.navigate(["home"]);
       }, 3000);
@@ -118,6 +122,7 @@ export class RoomService {
     });
 
     this.stompClient?.subscribe("/user/queue/warnings", (message: IMessage) => {
+      this.isLoadingSub.next(false)
       let data: string = message.body;
       if (data) {
         this.toast.clear()
@@ -133,7 +138,7 @@ export class RoomService {
   }
 
   updateIncludeDefault() {
-    let roomData = this.roomDataSubject.value
+    let roomData = this.roomDataSub.value
     if (roomData) {
       let data = {
         includeDefaultGameEnvs: !roomData.includeDefaultGameEnvs,
@@ -145,7 +150,7 @@ export class RoomService {
   }
 
   updateIncludeUser() {
-    let roomData = this.roomDataSubject.value
+    let roomData = this.roomDataSub.value
     if (roomData) {
       let data = {
         includeUserGameEnvs: !roomData.includeUserGameEnvs,
@@ -157,7 +162,7 @@ export class RoomService {
   }
 
   updateImpostors() {
-    let roomData = this.roomDataSubject.value
+    let roomData = this.roomDataSub.value
     if (roomData) {
       let impostors: number = roomData.impostors
       let data = {
@@ -170,7 +175,7 @@ export class RoomService {
   }
 
   updateRoomData(data: UpdateRoomDTO) {
-    let room = this.roomDataSubject.value?.id
+    let room = this.roomDataSub.value?.id
     if (this.stompClient && room) {
       this.stompClient.publish({
         destination: `/app/update/${room}`,
@@ -180,8 +185,9 @@ export class RoomService {
   }
 
   startGame() {
+    this.isLoadingSub.next(true)
     this.toast.clear()
-    let room = this.roomDataSubject.value?.id
+    let room = this.roomDataSub.value?.id
     if (this.stompClient && room) {
       this.stompClient.publish({
         destination: `/app/startGame/${room}`,
@@ -190,8 +196,9 @@ export class RoomService {
   }
 
   finishGame() {
+    this.isLoadingSub.next(true)
     this.toast.clear()
-    let room = this.roomDataSubject.value?.id
+    let room = this.roomDataSub.value?.id
     if (this.stompClient && room) {
       this.stompClient.publish({
         destination: `/app/finishGame/${room}`,
@@ -202,11 +209,12 @@ export class RoomService {
   leaveRoom() {
     this.toast.clear()
 
-    this.roomDataSubject.next(null)
-    this.usersSubject.next([])
-    this.gameSubject.next(null)
-    this.gamesListSubject.next([])
-    this.countDownSubject.next(null)
+    this.roomDataSub.next(null)
+    this.usersSub.next([])
+    this.gameSub.next(null)
+    this.gamesListSub.next([])
+    this.countDownSub.next(null)
+    this.isLoadingSub.next(true)
 
     this.stompClient?.deactivate()
   }

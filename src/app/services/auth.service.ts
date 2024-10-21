@@ -41,6 +41,19 @@ export class AuthService {
     )
   }
 
+  loginGuest(username: string) {
+    return this.httpClient.post<AuthResponse>(
+      `${this.API_URL}/guest`,
+      { username }
+    ).pipe(
+      tap((value) => {
+        localStorage.setItem("auth-token", value.token)
+        localStorage.setItem("auth-username", value.username)
+        localStorage.setItem("auth-id", value.id)
+      })
+    )
+  }
+
   update(username: string) {
     return this.httpClient.put<AuthResponse>(
       `${this.API_URL}/update`,
@@ -58,6 +71,7 @@ export class AuthService {
     localStorage.removeItem('auth-token')
     localStorage.removeItem('auth-username')
     localStorage.removeItem('auth-id')
+    sessionStorage.removeItem("last-room")
     router.navigate(['login'])
   }
 }

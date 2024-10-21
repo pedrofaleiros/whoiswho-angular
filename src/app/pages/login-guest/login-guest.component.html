@@ -1,0 +1,28 @@
+<app-back-button></app-back-button>
+
+<div class="w-full flex flex-col items-center p-2">
+  <div class="rounded-xl flex flex-col w-full max-w-xs mt-20 gap-2">
+    <p class="font-medium text-white text-xl w-full text-center mb-2">
+      Entrar como convidado
+    </p>
+    <form
+      (submit)="submit()"
+      [formGroup]="guestForm"
+      class="flex flex-col w-full gap-2 text-white"
+    >
+      <input
+        formControlName="username"
+        class="appearance-none border-2 rounded-md w-full py-2 px-3 border-gray-500 bg-gray-900 focus:outline-none focus:border-gray-300 focus:bg-gray-800 hover:bg-gray-800 font-mono"
+        type="text"
+        placeholder="Nome de usuario"
+      />
+
+      <button
+        type="submit"
+        class="bg-blue-700 font-mono rounded-md py-2 text-base font-medium active:bg-blue-500 flex justify-center"
+      >
+        Entrar
+      </button>
+    </form>
+  </div>
+</div>
