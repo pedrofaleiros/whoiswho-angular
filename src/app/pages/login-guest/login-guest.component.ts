@@ -43,7 +43,12 @@ export class LoginGuestComponent {
         this.router.navigate(["home"])
       },
       error: (err: HttpErrorResponse) => {
-        this.toast.error(err.error.message)
+        this.toast.clear()
+        if (err.error.message) {
+          this.toast.error(err.error.message)
+        } else {
+          this.toast.error("Erro inesperado")
+        }
       }
     })
   }

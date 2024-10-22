@@ -107,17 +107,13 @@ export class RoomService {
 
     this.stompClient?.subscribe("/user/queue/errors", (message: IMessage) => {
       let data: string = message.body;
-
       this.stompClient?.deactivate();
 
       if (data) {
-        this.toast.clear()
-        this.toast.error(data)
+        this.router.navigate(["home"], {
+          state: { errorMessage: data }
+        })
       }
-
-      setTimeout(() => {
-        this.router.navigate(["home"]);
-      }, 3000);
 
     });
 

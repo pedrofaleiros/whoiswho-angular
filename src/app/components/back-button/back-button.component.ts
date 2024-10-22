@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -22,9 +23,14 @@ export class BackButtonComponent {
   @Input() text = "Voltar"
   location = inject(Location)
   toast = inject(ToastrService)
+  router = inject(Router)
 
   navigateBack() {
     this.toast.clear()
-    this.location.back()
+    if (window.history.length > 2) {
+      this.location.back();
+    } else {
+      this.router.navigate(['home']);
+    }
   }
 }

@@ -7,6 +7,7 @@ import { Router, RouterOutlet } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RoomService } from '../../services/room.service';
 import { MatIconModule } from '@angular/material/icon';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +23,7 @@ export class HomeComponent implements OnInit {
 
   roomService = inject(RoomService)
   router = inject(Router)
+  toast = inject(ToastrService)
 
   constructor() {
     this.roomForm = new FormGroup({
@@ -30,6 +32,15 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    const state = history.state
+    history.replaceState({}, '', this.router.url)
+
+    if (state.errorMessage) {
+      this.toast.clear()
+      this.toast.error(state.errorMessage)
+    }
+
     let findLastRoom = sessionStorage.getItem('last-room')
     if (findLastRoom) {
       this.lastRoom = findLastRoom
