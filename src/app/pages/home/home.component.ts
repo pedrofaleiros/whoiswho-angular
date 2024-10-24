@@ -18,12 +18,15 @@ import { ToastrService } from 'ngx-toastr';
 export class HomeComponent implements OnInit {
 
   roomForm!: FormGroup
-
   lastRoom: string | null = null
 
   roomService = inject(RoomService)
   router = inject(Router)
   toast = inject(ToastrService)
+
+  loadingEnter = false
+  loadingLast = false
+  loadingNew = false
 
   constructor() {
     this.roomForm = new FormGroup({
@@ -48,25 +51,34 @@ export class HomeComponent implements OnInit {
   }
 
   createRoom() {
+    if (this.loadingEnter || this.loadingLast || this.loadingNew) return
+
+    this.loadingNew = true
     this.roomService.createRoom().subscribe({
       next: (data) => {
         this.router.navigate(['room', data])
       },
       error: (err) => {
-
+        this.loadingNew = false
       }
     })
   }
 
   navigateRoom() {
+    if (this.loadingEnter || this.loadingLast || this.loadingNew) return
+
     let roomId = this.roomForm.value.roomId
     if (roomId) {
+      this.loadingEnter = true
       this.router.navigate(['room', roomId])
     }
   }
 
   navigateLastRoom() {
+    if (this.loadingEnter || this.loadingLast || this.loadingNew) return
+
     if (this.lastRoom) {
+      this.loadingLast = true
       this.router.navigate(['room', this.lastRoom])
     }
   }

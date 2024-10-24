@@ -1,4 +1,5 @@
 export const environment = {
-    production: false,
-    API_URL: "http://192.168.0.130:8080"
+    production: true,
+    // API_URL: "http://192.168.0.129:8080"
+    API_URL: "https://backend-spring-909640324508.southamerica-east1.run.app"
 }

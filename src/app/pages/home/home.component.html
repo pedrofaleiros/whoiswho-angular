@@ -13,6 +13,9 @@
       class="text-base text-center appearance-none border-2 rounded-md w-full py-3 px-3 border-gray-500 bg-gray-900 focus:outline-none focus:border-gray-300 focus:bg-gray-800 hover:bg-gray-800 font-mono"
     />
     <button
+      [ngClass]="{
+        'bg-gray-900': loadingEnter
+      }"
       type="submit"
       class="font-mono w-full max-w-sm rounded-md py-2 text-base font-medium hover:bg-gray-900 flex justify-center border-2 border-blue-600 text-blue-600"
     >
@@ -20,6 +23,9 @@
     </button>
 
     <button
+      [ngClass]="{
+        'bg-gray-900': loadingLast
+      }"
       type="button"
       (click)="navigateLastRoom()"
       class="max-w-sm w-full text-green-500 text-base font-medium items-center flex justify-center gap-2 p-3 rounded-lg hover:bg-gray-800"
@@ -37,6 +43,9 @@
   </div>
 
   <button
+    [ngClass]="{
+      'bg-gray-900': loadingNew
+    }"
     (click)="createRoom()"
     class="mt-4 font-mono w-full max-w-sm rounded-md py-2 text-base font-medium hover:bg-gray-900 flex justify-center border-2 border-green-500 text-green-500"
   >

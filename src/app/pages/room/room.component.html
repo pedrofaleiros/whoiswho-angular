@@ -1,4 +1,4 @@
-<app-back-button text="Sair da sala"></app-back-button>
+<app-back-button *ngIf="!isLoading" text="Sair da sala"></app-back-button>
 
 <div class="m-4 flex flex-row justify-between items-center">
   <p
@@ -28,12 +28,21 @@
   </button>
 </div>
 
-<div *ngIf="isLoading && !countDown" class="w-full mt-32 flex justify-center">
-  <img
+<div
+  *ngIf="isLoading && !countDown"
+  class="w-full mt-32 flex flex-col items-center justify-center gap-4"
+>
+  <!-- <img
     src="/assets/loading.svg"
     alt="loading icon"
-    class="size-6 animate-spin"
-  />
+    class="size-6 animate-spin text-gray-500"
+  /> -->
+
+  <mat-icon class="animate-spin text-gray-500">data_usage</mat-icon>
+  <span
+    class="w-full text-center animate-pulse text-base font-mono text-gray-500"
+    >Carregando</span
+  >
 </div>
 
 <div
@@ -45,7 +54,9 @@
 
 <!-- IDLE -->
 <div
-  *ngIf="roomData != null && roomData.status == 'IDLE' && !countDown && !isLoading"
+  *ngIf="
+    roomData != null && roomData.status == 'IDLE' && !countDown && !isLoading
+  "
   class="m-4 flex-col flex gap-4"
 >
   <!-- Users List -->
