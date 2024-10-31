@@ -6,7 +6,7 @@ import { Room, User } from '../../models/room';
 import { CommonModule } from '@angular/common';
 import { BackButtonComponent } from "../../components/back-button/back-button.component";
 import { Game, GamePlayer } from '../../models/game';
-import { Subscription } from 'rxjs';
+import { Subscription, timeout } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { UsersListComponent } from "../../components/users-list/users-list.component";
 import { ImpostorsButtonComponent } from "../../components/impostors-button/impostors-button.component";
@@ -99,6 +99,14 @@ export class RoomComponent implements OnInit, OnDestroy {
     }
 
     window.addEventListener("beforeunload", this.beforeUnloadHandler.bind(this))
+
+    if (this.roomService.stompClient == null) {
+      setTimeout(() => {
+        if (this.roomService.stompClient == null) {
+          this.router.navigate(['home'])
+        }
+      }, 5000);
+    }
   }
 
   isADM() {

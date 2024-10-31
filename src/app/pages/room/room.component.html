@@ -11,7 +11,7 @@
   <!-- Start Button -->
   <button
     class="flex flex-row items-center font-medium text-base font-mono text-green-600 active:text-green-400"
-    *ngIf="isADM() && roomData?.status == 'IDLE' && !countDown && !isLoading"
+    *ngIf="isADM() && roomData?.status == 'IDLE' && !countDown && !isLoading && roomService.stompClient != null"
     (click)="roomService.startGame()"
   >
     <p>Iniciar</p>
@@ -21,7 +21,7 @@
   <!-- Finish Button -->
   <button
     class="flex flex-row items-center font-medium text-base font-mono text-red-600 active:text-red-400"
-    *ngIf="isADM() && roomData?.status == 'PLAYING'"
+    *ngIf="isADM() && roomData?.status == 'PLAYING' && roomService.stompClient != null"
     (click)="roomService.finishGame()"
   >
     <p>Finalizar</p>

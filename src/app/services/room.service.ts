@@ -19,7 +19,7 @@ export class RoomService {
   httpClient = inject(HttpClient)
   router = inject(Router)
   toast = inject(ToastrService)
-  private stompClient: Client | null = null
+  public stompClient: Client | null = null
 
   private isLoadingSub: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true)
   private roomDataSub: BehaviorSubject<Room | null> = new BehaviorSubject<Room | null>(null)
