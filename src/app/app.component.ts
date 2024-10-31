@@ -10,5 +10,6 @@ import { environment } from '../environment/environment';
   providers: [{ provide: 'API_URL', useValue: environment.API_URL }]
 })
 export class AppComponent {
+  
   constructor(@Inject('API_URL') public apiUrl: string) { }
 }
