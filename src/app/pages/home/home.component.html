@@ -44,7 +44,8 @@
 
   <button
     [ngClass]="{
-      'bg-gray-900': loadingNew
+      'bg-gray-900': loadingNew,
+      'animate-pulse': loadingNew
     }"
     (click)="createRoom()"
     class="mt-4 font-mono w-full max-w-sm rounded-md py-2 text-base font-medium hover:bg-gray-900 flex justify-center border-2 border-green-500 text-green-500"
