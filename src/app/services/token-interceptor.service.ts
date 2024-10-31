@@ -19,9 +19,7 @@ export const TokenInterceptor: HttpInterceptorFn = (req, next) => {
         catchError((err: any) => {
             if (err instanceof HttpErrorResponse) {
                 let status = err.status                
-                if(status === 0){
-                    alert("Erro de CORS")
-                } else if (status === 401 || status === 403) {
+                if (status === 401 || status === 403) {
                     authService.logout(router)
                 }
             }
