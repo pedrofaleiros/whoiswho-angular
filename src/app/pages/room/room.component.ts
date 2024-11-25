@@ -99,7 +99,6 @@ export class RoomComponent implements OnInit, OnDestroy {
     }
 
     window.addEventListener("beforeunload", this.beforeUnloadHandler.bind(this))
-    window.addEventListener("blur", this.beforeUnloadHandler.bind(this))
 
     if (this.roomService.stompClient == null) {
       setTimeout(() => {
@@ -111,11 +110,13 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   isADM() {
+    // return this.username === this.roomData?.owner.username
     return this.userId === this.roomData?.owner.id
   }
 
   getUserRole(): GamePlayer | null {
     if (this.game) {
+      // let index = this.game.gamePlayers.findIndex(el => el.user.username == this.username)
       let index = this.game.gamePlayers.findIndex(el => el.user.id == this.userId)
       if (index == -1) {
         return null
@@ -126,17 +127,12 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.disconnect()
-  }
-
-  private beforeUnloadHandler(event: any): void {
-    this.disconnect()
-  }
-
-  private disconnect() {
     this.roomService.disconnect();
     this.subs.unsubscribe()
     window.removeEventListener('beforeunload', this.beforeUnloadHandler.bind(this));
-    window.removeEventListener('blur', this.beforeUnloadHandler.bind(this));
+  }
+
+  private beforeUnloadHandler(event: any): void {
+    this.roomService.disconnect();
   }
 }
