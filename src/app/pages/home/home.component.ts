@@ -1,9 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppBarComponent } from "../../components/app-bar/app-bar.component";
-import { GameEnvListComponent } from "../../components/game-env-list/game-env-list.component";
-import { LoginComponent } from "../login/login.component";
-import { Router, RouterOutlet } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RoomService } from '../../services/room.service';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, AppBarComponent, LoginComponent, RouterOutlet, GameEnvListComponent, FormsModule, ReactiveFormsModule, MatIconModule],
+  imports: [CommonModule, AppBarComponent, FormsModule, ReactiveFormsModule, MatIconModule],
   templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
@@ -56,7 +54,8 @@ export class HomeComponent implements OnInit {
     this.loadingNew = true
     this.roomService.createRoom().subscribe({
       next: (data) => {
-        this.router.navigate(['room', data])
+        // this.router.navigate(['room', data])
+        this.router.navigate(['play', data])
       },
       error: (err) => {
         this.loadingNew = false
@@ -70,7 +69,8 @@ export class HomeComponent implements OnInit {
     let roomId = this.roomForm.value.roomId
     if (roomId) {
       this.loadingEnter = true
-      this.router.navigate(['room', roomId])
+      // this.router.navigate(['room', roomId])
+      this.router.navigate(['play', roomId])
     }
   }
 
@@ -79,7 +79,8 @@ export class HomeComponent implements OnInit {
 
     if (this.lastRoom) {
       this.loadingLast = true
-      this.router.navigate(['room', this.lastRoom])
+      // this.router.navigate(['room', this.lastRoom])
+      this.router.navigate(['play', this.lastRoom])
     }
   }
 }

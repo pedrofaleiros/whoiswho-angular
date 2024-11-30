@@ -10,11 +10,14 @@ import { ToastrService } from 'ngx-toastr';
   imports: [MatIconModule],
   template: `
     <div
-      (click)="navigateBack()"
       class="flex flex-row items-center mt-2 text-blue-600 active:text-blue-400"
     >
-      <mat-icon class="">chevron_left</mat-icon>
-      <button class="text-base">{{text}} </button>
+      <div 
+        class="flex flex-row items-center"
+        (click)="navigateBack()">  
+          <mat-icon class="">chevron_left</mat-icon>
+          <button class="text-base">{{text}} </button>
+      </div>
     </div>
   `,
 })

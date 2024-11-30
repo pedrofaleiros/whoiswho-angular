@@ -10,8 +10,8 @@ export enum RoomStatus {
 
 export interface Room {
     id: string;
-    owner: User;
-    // users: User[];
+    // owner: User;
+    ownerId: string;
     status: RoomStatus;
     impostors: number;
     includeDefaultGameEnvs: boolean;

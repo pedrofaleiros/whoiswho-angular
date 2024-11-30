@@ -11,21 +11,16 @@ import { CommonModule } from '@angular/common';
 export class UsersListComponent {
 
   @Input() users!: User[]
-  @Input() owner!: User
+  @Input() ownerId!: string
 
-  // userId: string = ""
   username: string = ""
   userId: string = ""
 
   constructor() {
-    // this.userId = localStorage.getItem('auth-id') || ""
     this.userId = localStorage.getItem('auth-id') || ""
     this.username = localStorage.getItem('auth-username') || ""
   }
 
-  // isMe(username: string) {
-  //   return this.username === username
-  // }
   isMe(id: string) {
     return this.userId === id
   }

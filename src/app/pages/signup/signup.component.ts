@@ -5,11 +5,12 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AppBarComponent } from "../../components/app-bar/app-bar.component";
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [ReactiveFormsModule, AppBarComponent],
+  imports: [ReactiveFormsModule, AppBarComponent, CommonModule],
   templateUrl: './signup.component.html'
 })
 export class SignupComponent {
@@ -20,6 +21,8 @@ export class SignupComponent {
   toast = inject(ToastrService)
 
   showPassword = false
+
+  isLoading = false;
 
   setShowPassword() {
     this.showPassword = !this.showPassword;
@@ -34,6 +37,8 @@ export class SignupComponent {
   }
 
   submit() {
+    if (this.isLoading) return;
+
     let username = this.signupForm.value.username
     let password = this.signupForm.value.password
     let passwordConfirm = this.signupForm.value.passwordConfirm
@@ -48,12 +53,15 @@ export class SignupComponent {
       return
     }
 
+    this.isLoading = true;
     this.service.signup(username, password).subscribe({
       next: (value) => {
+        this.isLoading = false;
         this.toast.success("Cadastrado com sucesso")
         this.router.navigate(["home"])
       },
       error: (err: HttpErrorResponse) => {
+        this.isLoading = false;
         this.toast.clear()
         if (err.error.message) {
           this.toast.error(err.error.message)
@@ -65,6 +73,7 @@ export class SignupComponent {
   }
 
   navigate() {
+    if (this.isLoading) return;
     this.router.navigate(['login'])
   }
 }

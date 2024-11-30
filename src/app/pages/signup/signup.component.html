@@ -39,6 +39,7 @@
 
       <button
         type="submit"
+        [ngClass]="{ 'bg-green-900': isLoading }"
         class="mt-4 bg-green-700 font-mono rounded-md py-2 text-base font-medium active:bg-green-600 flex justify-center"
       >
         Cadastrar
