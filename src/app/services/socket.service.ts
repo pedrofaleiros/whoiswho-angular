@@ -5,8 +5,8 @@ import { io, Socket } from 'socket.io-client';
 import { Room, User } from '../models/room';
 import { ToastrService } from 'ngx-toastr';
 import { Game } from '../models/game';
-import { environment } from '../../environment/environment';
 import { SocketConst } from '../utils/SocketConst';
+import { environment } from '../../environment/environment';
 
 @Injectable({
   providedIn: 'root'
