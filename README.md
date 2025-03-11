@@ -2,7 +2,10 @@
 
 #### WhoIsWho: https://whoiswho-angular.vercel.app
 
-#### Repositorio do backend: https://github.com/pedrofaleiros/whoiswho-java
+#### Repositorios do backend:
+
+- https://github.com/pedrofaleiros/whoiswho-java
+- https://github.com/pedrofaleiros/whoiswho-ws
 
 ## Sobre o Jogo
 
