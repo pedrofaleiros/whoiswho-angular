@@ -1,27 +1,23 @@
-# WhoiswhoApp
+# Whoiswho App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.8.
+#### WhoIsWho: https://whoiswho-angular.vercel.app
 
-## Development server
+#### Repositorio do backend: https://github.com/pedrofaleiros/whoiswho-java
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Sobre o Jogo
 
-## Code scaffolding
+Em uma partida, um jogador cria uma sala onde os demais se reúnem para jogar. No início, um local é sorteado e cada participante recebe uma profissão relacionada a esse local, com exceção dos impostores, que não têm essa informação.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Durante as rodadas, todos compartilham pistas sobre suas profissões e o local, tentando identificar os impostores sem revelar demais sobre si mesmos. Ao final de cada rodada, os jogadores podem optar por votar para eliminar um suspeito ou seguir sem eliminações.
 
-## Build
+Para que um jogador seja eliminado, é necessário que ele receba a maioria dos votos; se houver empate, ninguém é eliminado.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+O jogo termina quando:
 
-## Running unit tests
+- Todos os impostores são descobertos e eliminados;
+- Um impostor consegue eliminar jogadores até restar apenas ele e mais um;
+- Os impostores passam a ser a maioria.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+O número de impostores varia de 1 a 3, sempre iniciando como minoria entre os jogadores.
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+> **Obs:** O backend utiliza escalonamento automático com instâncias mínimas configuradas para 0. Portanto, após um período de inatividade, a primeira requisição pode sofrer um cold start, resultando em um breve atraso na resposta. Esse comportamento é esperado e visa otimizar a utilização de recursos.
