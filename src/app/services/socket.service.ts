@@ -96,7 +96,7 @@ export class SocketService {
   }
 
   leaveRoom() {
-    this.toast.clear();
+    // this.toast.clear();
 
     this.disconnect();
 
