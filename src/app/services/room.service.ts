@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import SockJS from 'sockjs-client';
 import { BehaviorSubject } from 'rxjs';
 import { Client, IMessage } from '@stomp/stompjs';
@@ -16,10 +16,14 @@ import { ToastrService } from 'ngx-toastr';
 export class RoomService {
 
   API_URL = environment.API_URL
-  httpClient = inject(HttpClient)
-  router = inject(Router)
-  toast = inject(ToastrService)
+
   public stompClient: Client | null = null
+
+  constructor(
+    private _httpClient: HttpClient,
+    private _router: Router,
+    private _toast: ToastrService,
+  ) { }
 
   private isLoadingSub: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true)
   private roomDataSub: BehaviorSubject<Room | null> = new BehaviorSubject<Room | null>(null)
@@ -110,7 +114,7 @@ export class RoomService {
       this.stompClient?.deactivate();
 
       if (data) {
-        this.router.navigate(["home"], {
+        this._router.navigate(["home"], {
           state: { errorMessage: data }
         })
       }
@@ -121,8 +125,8 @@ export class RoomService {
       this.isLoadingSub.next(false)
       let data: string = message.body;
       if (data) {
-        this.toast.clear()
-        this.toast.warning(data, '', {
+        this._toast.clear()
+        this._toast.warning(data, '', {
           positionClass: 'toast-bottom-right'
         })
       }
@@ -182,7 +186,7 @@ export class RoomService {
 
   startGame() {
     this.isLoadingSub.next(true)
-    this.toast.clear()
+    this._toast.clear()
     let room = this.roomDataSub.value?.id
     if (this.stompClient && room) {
       this.stompClient.publish({
@@ -193,7 +197,7 @@ export class RoomService {
 
   finishGame() {
     this.isLoadingSub.next(true)
-    this.toast.clear()
+    this._toast.clear()
     let room = this.roomDataSub.value?.id
     if (this.stompClient && room) {
       this.stompClient.publish({
@@ -203,7 +207,7 @@ export class RoomService {
   }
 
   leaveRoom() {
-    this.toast.clear()
+    this._toast.clear()
 
     this.roomDataSub.next(null)
     this.usersSub.next([])
@@ -220,6 +224,6 @@ export class RoomService {
   }
 
   createRoom() {
-    return this.httpClient.post<string>(`${this.API_URL}/room`, {})
+    return this._httpClient.post<string>(`${this.API_URL}/room`, {})
   }
 }

@@ -1,6 +1,6 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { Room, User } from '../models/room';
 import { ToastrService } from 'ngx-toastr';
@@ -13,8 +13,6 @@ import { environment } from '../../environment/environment';
 })
 export class SocketService {
 
-  router = inject(Router);
-  toast = inject(ToastrService);
   private socket: Socket;
 
   private roomDataSub: BehaviorSubject<Room | null> = new BehaviorSubject<Room | null>(null);
@@ -32,7 +30,7 @@ export class SocketService {
   private isLoadingSub: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   public isLoading$ = this.isLoadingSub.asObservable();
 
-  constructor() {
+  constructor(private _router: Router, private _toast: ToastrService) {
     this.socket = io(environment.SOCKET_URL, { autoConnect: false });
   }
 
@@ -49,11 +47,11 @@ export class SocketService {
     });
 
     this.socket.on(SocketConst.ERROR, (data) => {
-      this.toast.error(data);
+      this._toast.error(data);
     });
 
     this.socket.on(SocketConst.WARNING, (data) => {
-      this.toast.warning(data);
+      this._toast.warning(data);
       this.isLoadingSub.next(false);
     });
 
@@ -83,7 +81,7 @@ export class SocketService {
 
     this.socket.on(SocketConst.DISCONNECT, () => {
       this.disconnect();
-      this.router.navigate(["home"])
+      this._router.navigate(["home"])
     });
   }
 
@@ -106,16 +104,16 @@ export class SocketService {
 
   startGame() {
     var roomData = this.roomDataSub.value;
-    if(roomData){
+    if (roomData) {
       var usersSize = this.usersSub.value.length;
       var impostors = roomData.impostors;
       if (usersSize < 3 || impostors >= Math.ceil(usersSize / 2)) {
-        this.toast.warning("Impostores devem ser minoria.");
+        this._toast.warning("Impostores devem ser minoria.");
         return;
       }
-      
-      if(!roomData.includeDefaultGameEnvs && ! roomData.includeUserGameEnvs){
-        this.toast.warning("Selecione pelo menos um tipo de ambiente.");
+
+      if (!roomData.includeDefaultGameEnvs && !roomData.includeUserGameEnvs) {
+        this._toast.warning("Selecione pelo menos um tipo de ambiente.");
         return;
       }
     }

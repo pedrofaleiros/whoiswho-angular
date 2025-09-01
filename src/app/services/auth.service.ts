@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AuthResponse } from '../types/auth-response.type';
 import { tap } from 'rxjs';
 import { Router } from '@angular/router';
@@ -11,12 +11,11 @@ import { environment } from '../../environment/environment';
 export class AuthService {
 
   API_URL = `${environment.API_URL}/auth`
-  httpClient = inject(HttpClient)
 
-  constructor() { }
+  constructor(private _httpClient: HttpClient) { }
 
   login(username: string, password: string) {
-    return this.httpClient.post<AuthResponse>(
+    return this._httpClient.post<AuthResponse>(
       `${this.API_URL}/login`,
       { username, password }
     ).pipe(
@@ -29,7 +28,7 @@ export class AuthService {
   }
 
   signup(username: string, password: string) {
-    return this.httpClient.post<AuthResponse>(
+    return this._httpClient.post<AuthResponse>(
       `${this.API_URL}/signup`,
       { username, password }
     ).pipe(
@@ -42,7 +41,7 @@ export class AuthService {
   }
 
   loginGuest(username: string) {
-    return this.httpClient.post<AuthResponse>(
+    return this._httpClient.post<AuthResponse>(
       `${this.API_URL}/guest`,
       { username }
     ).pipe(
@@ -55,7 +54,7 @@ export class AuthService {
   }
 
   update(username: string) {
-    return this.httpClient.put<AuthResponse>(
+    return this._httpClient.put<AuthResponse>(
       `${this.API_URL}/update`,
       { username }
     ).pipe(

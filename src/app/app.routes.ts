@@ -6,7 +6,6 @@ import { SignupComponent } from './pages/signup/signup.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { MainComponent } from './pages/main/main.component';
 import { GameEnvsComponent } from './pages/game-envs/game-envs.component';
-// import { RoomComponent } from './pages/room/room.component';
 import { LoginGuestComponent } from './pages/login-guest/login-guest.component';
 import { PlayComponent } from './pages/play/play.component';
 
@@ -15,11 +14,6 @@ export const routes: Routes = [
     { path: "login", component: LoginComponent },
     { path: "signup", component: SignupComponent },
     { path: "guest", component: LoginGuestComponent },
-    // {
-    //     path: "room/:id",
-    //     component: RoomComponent,
-    //     canActivate: [AuthGuardService]
-    // },
     {
         path: "play/:id",
         component: PlayComponent,
