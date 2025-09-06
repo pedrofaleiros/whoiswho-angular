@@ -1,8 +1,8 @@
 <div
   (click)="setExpand()"
-  class="cursor-pointer rounded-lg flex flex-row justify-between text-xl p-3 px-1 font-medium mt-4"
+  class="cursor-pointer rounded-lg flex flex-row justify-between text-lg py-4 px-2 font-medium mt-2"
   [ngClass]="{
-    'text-blue-600': expand,
+    'bg-gray-900': expand,
   }"
 >
   <span class="w-full">{{ gameEnv.name }} </span>
@@ -26,6 +26,20 @@
     'max-h-fit': expand && playerRoles.length >= 8,
   }"
 >
+  <div>
+    <p
+      *ngIf="playerRoles.length !== 0"
+      class="uppercase text-gray-500 font-medium text-sm p-1"
+    >
+      Papeis
+    </p>
+    <app-player-role-list
+      [editable]="true"
+      [playerRoles]="playerRoles"
+      (deletePlayerRole)="deletePlayerRole($event)"
+    ></app-player-role-list>
+  </div>
+
   <div>
     <p class="uppercase text-gray-500 font-medium text-sm p-1">Novo papel</p>
 
@@ -52,20 +66,6 @@
         Adicionar
       </button>
     </form>
-  </div>
-
-  <div>
-    <p
-      *ngIf="playerRoles.length !== 0"
-      class="uppercase text-gray-500 font-medium text-sm p-1"
-    >
-      Papeis
-    </p>
-    <app-player-role-list
-      [editable]="true"
-      [playerRoles]="playerRoles"
-      (deletePlayerRole)="deletePlayerRole($event)"
-    ></app-player-role-list>
   </div>
 
   <button

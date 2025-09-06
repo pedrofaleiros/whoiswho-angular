@@ -1,14 +1,11 @@
 <div
   (click)="setExpand()"
-  class="cursor-pointer flex flex-row justify-between text-xl pt-5 pb-3 px-1 font-medium"
+  class="cursor-pointer my-1 rounded-lg flex flex-row justify-between text-lg pt-4 pb-4 font-medium px-2"
+  [ngClass]="{
+    'bg-gray-900': expand,
+  }"
 >
-  <span
-    [ngClass]="{
-      'text-blue-600': expand
-    }"
-    class="w-full"
-    >{{ gameEnv.name }}
-  </span>
+  <span class="w-full">{{ gameEnv.name }} </span>
 
   <mat-icon
     [ngClass]="{
