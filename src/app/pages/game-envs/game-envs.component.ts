@@ -1,20 +1,16 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
+import { AppModule } from '../../app.module';
 import { GameEnv } from '../../models/game-env';
 import { GameEnvService } from '../../services/game-env.service';
-import { DefaultGameEnvComponent } from "../../components/default-game-env/default-game-env.component";
 import { FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
-import { GameEnvInputComponent } from "../../components/game-env-input/game-env-input.component";
-import { UserGameEnvComponent } from "../../components/user-game-env/user-game-env.component";
 import { ToastrService } from 'ngx-toastr';
-import { BackButtonComponent } from "../../components/back-button/back-button.component";
 
 @Component({
   selector: 'app-game-envs',
   standalone: true,
-  imports: [MatIconModule, CommonModule, DefaultGameEnvComponent, FormsModule, GameEnvInputComponent, UserGameEnvComponent, BackButtonComponent],
+  imports: [AppModule],
   templateUrl: './game-envs.component.html',
 })
 export class GameEnvsComponent {

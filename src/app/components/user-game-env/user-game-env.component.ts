@@ -4,10 +4,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { GameEnv } from '../../models/game-env';
 import { PlayerRole } from '../../models/player-role';
 import { PlayerRoleService } from '../../services/player-role.service';
-import { PlayerRoleListComponent } from "../player-role-list/player-role-list.component";
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
+import { PlayerRoleListComponent } from "../player-role-list/player-role-list.component";
 
 @Component({
   selector: 'app-user-game-env',

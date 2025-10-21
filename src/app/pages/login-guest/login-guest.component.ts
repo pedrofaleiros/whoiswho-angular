@@ -1,16 +1,15 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
-import { BackButtonComponent } from "../../components/back-button/back-button.component";
-import { CommonModule } from '@angular/common';
+import { AppModule } from '../../app.module';
 
 @Component({
   selector: 'app-login-guest',
   standalone: true,
-  imports: [ReactiveFormsModule, BackButtonComponent, CommonModule],
+  imports: [AppModule],
   templateUrl: './login-guest.component.html',
 })
 export class LoginGuestComponent {

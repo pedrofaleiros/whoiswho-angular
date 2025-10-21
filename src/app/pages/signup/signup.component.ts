@@ -1,16 +1,15 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AppBarComponent } from "../../components/app-bar/app-bar.component";
-import { CommonModule } from '@angular/common';
+import { AppModule } from '../../app.module';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [ReactiveFormsModule, AppBarComponent, CommonModule],
+  imports: [AppModule],
   templateUrl: './signup.component.html'
 })
 export class SignupComponent {

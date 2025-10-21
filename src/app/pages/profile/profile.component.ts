@@ -1,20 +1,15 @@
 import { Component, inject } from '@angular/core';
-import { GameEnvListComponent } from "../../components/game-env-list/game-env-list.component";
-import { AppBarComponent } from "../../components/app-bar/app-bar.component";
+import { AppModule } from '../../app.module';
 import { Router } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
-import { CommonModule } from '@angular/common';
-import { BackButtonComponent } from "../../components/back-button/back-button.component";
-import { NavGameEnvButtonComponent } from "../../components/nav-game-env-button/nav-game-env-button.component";
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [GameEnvListComponent, AppBarComponent, MatIconModule, FormsModule, CommonModule, BackButtonComponent, NavGameEnvButtonComponent],
+  imports: [AppModule],
   templateUrl: './profile.component.html'
 })
 export class ProfileComponent {

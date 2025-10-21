@@ -1,16 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AppBarComponent } from "../../components/app-bar/app-bar.component";
+import { AppModule } from '../../app.module';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { RoomService } from '../../services/room.service';
-import { MatIconModule } from '@angular/material/icon';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, AppBarComponent, FormsModule, ReactiveFormsModule, MatIconModule],
+  imports: [AppModule],
   templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {

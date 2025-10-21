@@ -2,19 +2,14 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { SocketService } from '../../services/socket.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Room, User } from '../../models/room';
-import { CommonModule } from '@angular/common';
-import { UsersListComponent } from "../../components/users-list/users-list.component";
-import { RoomSwitchesComponent } from "../../components/room-switches/room-switches.component";
-import { ImpostorsButtonComponent } from "../../components/impostors-button/impostors-button.component";
-import { BackButtonComponent } from "../../components/back-button/back-button.component";
+import { AppModule } from '../../app.module';
 import { Game, GamePlayer } from '../../models/game';
-import { MatIconModule } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-play',
   standalone: true,
-  imports: [CommonModule, UsersListComponent, RoomSwitchesComponent, ImpostorsButtonComponent, BackButtonComponent, MatIconModule],
+  imports: [AppModule],
   templateUrl: './play.component.html',
 })
 export class PlayComponent implements OnInit, OnDestroy {

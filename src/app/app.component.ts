@@ -1,12 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { AppModule } from './app.module';
 import { environment } from '../environment/environment';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [AppModule],
   templateUrl: './app.component.html',
   providers: [{ provide: 'API_URL', useValue: environment.API_URL }]
 })
