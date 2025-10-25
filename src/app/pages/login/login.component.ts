@@ -54,7 +54,7 @@ export class LoginComponent {
 
     this.isLoading = true;
     this.service.login(username, password).subscribe({
-      next: (value) => {
+      next: (_) => {
         this.isLoading = false;
         this.router.navigate(["home"])
       },
@@ -80,4 +80,8 @@ export class LoginComponent {
     this.router.navigate(['signup'])
   }
 
+  loginGithub() {
+    if (this.isLoading) return;
+    this.service.loginWithGithub();
+  }
 }

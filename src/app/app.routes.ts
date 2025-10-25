@@ -8,12 +8,14 @@ import { MainComponent } from './pages/main/main.component';
 import { GameEnvsComponent } from './pages/game-envs/game-envs.component';
 import { LoginGuestComponent } from './pages/login-guest/login-guest.component';
 import { PlayComponent } from './pages/play/play.component';
+import { GithubCallbackComponent } from './pages/github-callback/github-callback.component';
 
 export const routes: Routes = [
     { path: "", redirectTo: "home", pathMatch: "full" },
     { path: "login", component: LoginComponent },
     { path: "signup", component: SignupComponent },
     { path: "guest", component: LoginGuestComponent },
+    { path: "auth/callback", component: GithubCallbackComponent },
     {
         path: "play/:id",
         component: PlayComponent,

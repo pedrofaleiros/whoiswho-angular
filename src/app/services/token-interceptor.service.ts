@@ -9,7 +9,7 @@ export const TokenInterceptor: HttpInterceptorFn = (req, next) => {
     let authService = inject(AuthService)
 
     let token = localStorage.getItem('auth-token')
-    let isAuth = req.url.includes('/login') || req.url.includes('/signup')
+    let isAuth = req.url.includes('/login') || req.url.includes('/signup') || req.url.includes('/github')
 
     if (token && !isAuth) {
         req = req.clone({
