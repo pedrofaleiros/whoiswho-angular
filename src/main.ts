@@ -1,6 +1,10 @@
-import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
-import { AppComponent } from './app/app.component';
+import { runBootstrapIfEnabled } from './bootstrap';
 
-bootstrapApplication(AppComponent, appConfig)
-  .catch((err) => console.error(err));
+export function startMain(
+  run = runBootstrapIfEnabled,
+  win: Window & typeof globalThis = window,
+) {
+  return run(win);
+}
+
+startMain();

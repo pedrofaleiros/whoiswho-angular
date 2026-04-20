@@ -4,6 +4,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
+export const backButtonBrowser = {
+  getWindowHistoryLength() {
+    return window.history.length;
+  }
+};
+
 @Component({
   selector: 'app-back-button',
   standalone: true,
@@ -30,7 +36,7 @@ export class BackButtonComponent {
 
   navigateBack() {
     this.toast.clear()
-    if (window.history.length > 2) {
+    if (backButtonBrowser.getWindowHistoryLength() > 2) {
       this.location.back();
     } else {
       this.router.navigate(['home']);

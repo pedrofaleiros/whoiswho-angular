@@ -10,6 +10,15 @@ import { Game } from '../models/game';
 import { environment } from '../../environment/environment';
 import { ToastrService } from 'ngx-toastr';
 
+export const roomServiceFactory = {
+  createSockJsClient(url: string) {
+    return new SockJS(url);
+  },
+  createStompClient(config: any) {
+    return new Client(config);
+  }
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -43,8 +52,8 @@ export class RoomService {
     let username = localStorage.getItem('auth-username') ?? "";
     let token = localStorage.getItem('auth-token') ?? "";
 
-    this.stompClient = new Client({
-      webSocketFactory: () => new SockJS(`${this.API_URL}/ws`),
+    this.stompClient = roomServiceFactory.createStompClient({
+      webSocketFactory: () => roomServiceFactory.createSockJsClient(`${this.API_URL}/ws`),
       reconnectDelay: 0,
       connectHeaders: {
         'Authorization': `Bearer ${token}`

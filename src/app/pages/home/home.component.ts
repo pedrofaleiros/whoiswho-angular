@@ -7,6 +7,15 @@ import { RoomService } from '../../services/room.service';
 import { MatIconModule } from '@angular/material/icon';
 import { ToastrService } from 'ngx-toastr';
 
+export const homeBrowser = {
+  getNavigationState() {
+    return history.state
+  },
+  clearNavigationState(url: string) {
+    history.replaceState({}, '', url)
+  }
+};
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -34,8 +43,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const state = history.state
-    history.replaceState({}, '', this.router.url)
+    const state = homeBrowser.getNavigationState()
+    homeBrowser.clearNavigationState(this.router.url)
 
     if (state.errorMessage) {
       this.toast.clear()

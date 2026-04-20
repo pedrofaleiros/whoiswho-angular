@@ -8,6 +8,12 @@ import { Game } from '../models/game';
 import { SocketConst } from '../utils/SocketConst';
 import { environment } from '../../environment/environment';
 
+export const socketServiceFactory = {
+  createSocketConnection(url: string) {
+    return io(url, { autoConnect: false });
+  }
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -31,7 +37,7 @@ export class SocketService {
   public isLoading$ = this.isLoadingSub.asObservable();
 
   constructor(private _router: Router, private _toast: ToastrService) {
-    this.socket = io(environment.SOCKET_URL, { autoConnect: false });
+    this.socket = socketServiceFactory.createSocketConnection(environment.SOCKET_URL);
   }
 
   joinRoom(roomId: string) {
