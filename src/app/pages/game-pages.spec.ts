@@ -75,11 +75,12 @@ describe('game-related pages', () => {
 
     it('proxies browser history helpers', () => {
       spyOn(history, 'replaceState');
+      const currentUrl = window.location.href;
 
       expect(homeModule.homeBrowser.getNavigationState()).toBe(history.state);
 
-      homeModule.homeBrowser.clearNavigationState('/home');
-      expect(history.replaceState).toHaveBeenCalledWith({}, '', '/home');
+      homeModule.homeBrowser.clearNavigationState(currentUrl);
+      expect(history.replaceState).toHaveBeenCalledWith({}, '', currentUrl);
     });
 
     it('creates a room, handles errors, and respects loading guards', () => {
